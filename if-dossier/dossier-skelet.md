@@ -14,7 +14,23 @@
 
 ---
 
-## Filter: Dit dossier op maat voor uw situatie
+## Twee ingangen — kies uw route
+
+Dit dossier kan op twee manieren worden gelezen:
+
+**🔄 Route A — Levensfase**
+"Waar sta ik nu, wat komt er?" 
+Van oriëntatie via hulp thuis naar woonvormen, EHPAD, palliatief en overlijden.
+
+**📋 Route B — Regelingen**
+"Waar heb ik recht op?"
+Direct naar de regeling die u zoekt: APA, ASH, crédit d'impôt, etc.
+
+[Kies Route A: Levensfase](#filter-levensfase) | [Kies Route B: Regelingen](#filter-regelingen)
+
+---
+
+## Route A — Filter op levensfase
 
 ### Stap 1 van 3 — Woonsituatie
 
@@ -50,6 +66,132 @@
 - ☐ Nee, ik huur
 
 → **Toon mijn selectie**
+
+---
+
+## Route B — Filter op regelingen
+
+### Waar heb ik recht op?
+
+Selecteer de regeling(en) waarover u meer wilt weten:
+
+**Financiële tegemoetkomingen**
+- ☐ **APA** — Allocation personnalisée d'autonomie (zorgbudget 60+)
+- ☐ **ASH** — Aide sociale à l'hébergement (bijstand EHPAD-kosten)
+- ☐ **ASPA** — Allocation de solidarité aux personnes âgées (minimuminkomen)
+- ☐ **Crédit d'impôt** — Belastingteruggave services à la personne (50%)
+- ☐ **MaPrimeAdapt'** — Subsidie woningaanpassing
+- ☐ **Aides caisses de retraite** — Hulp via pensioenfonds (CARSAT, Agirc-Arrco)
+
+**Zorgdiensten**
+- ☐ **SAAD** — Service d'aide et d'accompagnement à domicile (thuishulp)
+- ☐ **SSIAD** — Service de soins infirmiers à domicile (thuisverpleging)
+- ☐ **HAD** — Hospitalisation à domicile (ziekenhuiszorg thuis)
+- ☐ **Accueil de jour** — Dagopvang
+
+**Mantelzorgondersteuning**
+- ☐ **AJPA** — Allocation journalière du proche aidant (verlofvergoeding)
+- ☐ **Droit au répit** — Recht op vervangende zorg
+- ☐ **PFR** — Plateforme d'accompagnement et de répit
+
+**Woonvormen**
+- ☐ **Résidence autonomie** — Zelfstandig wonen met diensten
+- ☐ **Résidence services** — Commerciële seniorenwoning
+- ☐ **Accueil familial** — Erkend gastgezin
+- ☐ **EHPAD** — Verzorgingshuis met medische zorg
+
+**Juridische bescherming**
+- ☐ **Personne de confiance** — Medische vertrouwenspersoon
+- ☐ **Directives anticipées** — Wilsverklaring behandeling
+- ☐ **Mandat de protection future** — Volmacht voor later
+- ☐ **Habilitation familiale** — Familiemachtiging
+- ☐ **Curatelle / Tutelle** — Bewind / Onder curatele
+
+**Levenseinde**
+- ☐ **Soins palliatifs** — Palliatieve zorg
+- ☐ **Sédation profonde** — Diepe sedatie (Claeys-Leonetti)
+
+→ **Toon geselecteerde regelingen**
+
+---
+
+## Regelingenoverzicht (Route B)
+
+### Financiële tegemoetkomingen — Samenvattingstabel
+
+| Regeling | Voor wie | Wat | Hoeveel (indicatief 2026) | Waar aanvragen |
+|----------|----------|-----|---------------------------|----------------|
+| **APA** | 60+, GIR 1-4 | Zorgbudget thuis of EHPAD | €811 – €2.080/maand | Conseil départemental |
+| **ASH** | Laag inkomen, in EHPAD | Bijdrage EHPAD-kosten | Variabel (na vermogenstoets) | Conseil départemental |
+| **ASPA** | 65+, laag inkomen | Minimuminkomen | Tot €1.012/maand (alleenstaand) | Caisse de retraite |
+| **Crédit d'impôt** | Iedereen met hulp aan huis | 50% kosten terug | Max €6.000-€10.000/jaar | Belastingaangifte |
+| **MaPrimeAdapt'** | Eigenaar 60+/70+ | Subsidie woningaanpassing | Tot 70% van kosten | ANAH |
+| **Aides retraite** | Gepensioneerden | Diverse (nooduitkering, hulp) | Variabel | CARSAT / Agirc-Arrco |
+
+### Zorgdiensten — Samenvattingstabel
+
+| Dienst | Wat | Voor wie | Kosten | Vergoeding |
+|--------|-----|----------|--------|------------|
+| **SAAD** | Huishoudelijke hulp, ADL | Iedereen met hulpvraag | €20-25/uur | Via APA of caisse retraite |
+| **SSIAD** | Verpleging aan huis | Op voorschrift arts | Gratis | 100% Sécu |
+| **HAD** | Ziekenhuiszorg thuis | Complexe medische zorg | Gratis | 100% Sécu |
+| **Accueil de jour** | Dagopvang | GIR 1-5 | €15-30/dag | Deels via APA |
+
+### Mantelzorgondersteuning — Samenvattingstabel
+
+| Regeling | Voor wie | Wat | Hoeveel | Waar aanvragen |
+|----------|----------|-----|---------|----------------|
+| **AJPA** | Werkende mantelzorger | Verlofvergoeding | €64,54/dag (max 66 dagen) | CAF / MSA |
+| **Droit au répit** | Mantelzorger met APA-ontvanger | Budget vervangende zorg | Tot €548/jaar | Via APA-plan |
+| **PFR** | Mantelzorgers | Advies, respijtzorg, lotgenoten | Gratis | Lokaal (annuaire) |
+
+### Woonvormen — Samenvattingstabel
+
+| Woonvorm | Voor wie | Kosten/maand | Kenmerken |
+|----------|----------|--------------|-----------|
+| **Résidence autonomie** | GIR 5-6, zelfstandig | €600-1.200 | Sociale huur, diensten, geen medische zorg |
+| **Résidence services** | GIR 5-6, zelfstandig | €1.500-3.000 | Commercieel, meer luxe |
+| **Accueil familial** | GIR 1-6 | €1.500-2.500 | Kleinschalig, persoonlijk |
+| **EHPAD** | GIR 1-4 | €2.000-3.500 | Medische zorg 24/7 |
+
+### Juridische bescherming — Samenvattingstabel
+
+| Maatregel | Wanneer regelen | Wat | Kosten | Waar |
+|-----------|-----------------|-----|--------|------|
+| **Personne de confiance** | Nu (preventief) | Medische vertrouwenspersoon | Gratis | Bij huisarts |
+| **Directives anticipées** | Nu (preventief) | Wilsverklaring behandeling | Gratis | Zelf opstellen |
+| **Mandat protection future** | Nu (preventief) | Volmacht vermogen/persoon | €0-500 (notaris) | Zelf of notaris |
+| **Habilitation familiale** | Bij wilsonbekwaamheid | Familiemachtiging | €200-500 | Juge des tutelles |
+| **Curatelle/Tutelle** | Bij wilsonbekwaamheid | Bewind door derden | Variabel | Juge des tutelles |
+
+### Levenseinde — Samenvattingstabel
+
+| Voorziening | Wat | Waar | Kosten |
+|-------------|-----|------|--------|
+| **Soins palliatifs** | Pijnbestrijding, comfort | Thuis, EHPAD, USP, ziekenhuis | Gratis (Sécu) |
+| **Sédation profonde** | Diepe sedatie tot overlijden | Ziekenhuis, thuis (HAD) | Gratis (Sécu) |
+
+*Actieve euthanasie is in Frankrijk niet toegestaan*
+
+---
+
+## Cross-links tussen routes
+
+De content is hetzelfde — alleen de ingang verschilt:
+
+| Route A sectie | ↔ | Route B regeling |
+|----------------|---|------------------|
+| 5. Hulp aan huis | ↔ | SAAD, APA |
+| 6. Verpleging aan huis | ↔ | SSIAD, HAD |
+| 7. Hulpmiddelen | ↔ | MaPrimeAdapt', MDPH |
+| 8. Mantelzorg | ↔ | AJPA, Droit au répit, PFR |
+| 9-11. Woonvormen | ↔ | Résidence autonomie/services, Accueil familial |
+| 12. EHPAD | ↔ | EHPAD, ASH, APA en établissement |
+| 16-19. Juridisch | ↔ | Alle juridische maatregelen |
+| 20-21. Levenseinde | ↔ | Soins palliatifs, Sédation |
+| 24. APA | ↔ | APA |
+| 25. ASH | ↔ | ASH |
+| 26. Crédit d'impôt | ↔ | Crédit d'impôt |
 
 ---
 
