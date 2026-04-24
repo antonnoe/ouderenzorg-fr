@@ -54,6 +54,19 @@
 
 ---
 
+## Bestaande assets in GitHub
+
+Zie: [bronnen/github-inventaris.md](bronnen/github-inventaris.md)
+
+| Repo | Bruikbaar voor |
+|------|----------------|
+| `Ouderenzorg` | Definities, contacten, annuaires |
+| `infographic-ouderenzorg` | Visueel overzicht |
+| `zorglexicon-frankrijk` | NL↔FR terminologie |
+| `zorgkompas-frankrijk` | Kostencalculator |
+
+---
+
 ## Mappenstructuur
 
 ```
@@ -62,13 +75,9 @@ ouderenzorg-fr/
 ├── README.md             ← korte intro
 ├── fases/
 │   ├── fase-0-orientatie.md
-│   ├── fase-1-hulp-thuis.md
-│   ├── fase-2-verzorging.md
-│   ├── fase-3-begeleid-wonen.md
-│   ├── fase-4-ehpad.md
-│   └── fase-5-palliatief.md
+│   └── ...
 ├── bronnen/
-│   └── bronnenlijst.md
+│   └── github-inventaris.md
 └── if-consolidatie/
     └── artikelanalyse.md
 ```
