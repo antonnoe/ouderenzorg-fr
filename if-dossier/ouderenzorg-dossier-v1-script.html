@@ -1,0 +1,340 @@
+<!-- ============================================================
+  INFOFRANKRIJK — Ouder worden in Frankrijk: het complete dossier
+  WordPress/Divi-klare versie V1.0 — DEEL 2 VAN 2
+  JavaScript: DossierFrankrijk integratie, PDF, premium-functies
+  
+  Plak dit direct na deel 1.
+============================================================ -->
+
+<!-- jsPDF voor PDF-export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+(function() {
+  'use strict';
+  
+  // ===== SECTIE METADATA =====
+  var SECTIONS = [
+    { id: '1', title: '1. Waarom dit dossier — en waarom op tijd beginnen' },
+    { id: '2', title: '2. Het Franse ouderenzorgstelsel in vogelvlucht' },
+    { id: '3', title: '3. De sleutelbegrippen: APA, GIR, CLIC, EHPAD' },
+    { id: '4', title: '4. Waar vind ik hulp: CLIC, mairie, CCAS' },
+    // Secties 5-30 worden later toegevoegd
+  ];
+  
+  var DOSSIER_TITLE = 'Ouder worden in Frankrijk';
+  var DOSSIER_SLUG = 'ouderenzorg-frankrijk';
+  
+  function $(s) { return document.querySelector(s); }
+  function $$(s) { return document.querySelectorAll(s); }
+  
+  // ===== ABONNEE CHECK =====
+  function isSubscriber() {
+    var root = $('.ifr-ozg');
+    return root && root.getAttribute('data-ifr-member') === '1';
+  }
+  
+  // ===== TOAST =====
+  function showToast(msg) {
+    var t = $('#ifr-ozg-toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('ifr-ozg-visible');
+    setTimeout(function() { t.classList.remove('ifr-ozg-visible'); }, 3000);
+  }
+  
+  // ===== POPOVER =====
+  function showPopover(action) {
+    var overlay = $('#ifr-ozg-popover-overlay');
+    var popover = $('#ifr-ozg-popover');
+    var textEl = $('#ifr-ozg-popover-text');
+    
+    if (action === 'save-section') {
+      textEl.textContent = 'Sla deze sectie op in uw persoonlijke dossier zodat u hem later kunt terugvinden.';
+    } else if (action === 'save-dossier') {
+      textEl.textContent = 'Sla het volledige dossier op in uw persoonlijke DossierFrankrijk, zodat u het later kunt raadplegen.';
+    } else if (action === 'download-pdf') {
+      textEl.textContent = 'Download het dossier als overzichtelijke PDF — om offline door te nemen, uit te printen, of te delen.';
+    } else {
+      textEl.textContent = 'Deze functie is beschikbaar voor abonnees van Infofrankrijk.';
+    }
+    
+    if (overlay) overlay.classList.add('ifr-ozg-visible');
+    if (popover) popover.classList.add('ifr-ozg-visible');
+  }
+  
+  function hidePopover() {
+    var o = $('#ifr-ozg-popover-overlay');
+    var p = $('#ifr-ozg-popover');
+    if (o) o.classList.remove('ifr-ozg-visible');
+    if (p) p.classList.remove('ifr-ozg-visible');
+  }
+  
+  // ===== DOSSIERFRANKRIJK: SECTIE OPSLAAN =====
+  function saveSectionToDossier(sectionId) {
+    var section = document.querySelector('[data-ifr-id="' + sectionId + '"]');
+    if (!section) return;
+    
+    var h2 = section.querySelector('h2');
+    var sectionTitle = h2 ? h2.textContent : 'Sectie ' + sectionId;
+    var articleTitle = document.title || DOSSIER_TITLE;
+    
+    var parts = [];
+    section.querySelectorAll('p, li, h3, h4').forEach(function(el) {
+      var txt = (el.innerText || el.textContent || '').trim();
+      if (!txt) return;
+      if (el.tagName === 'H3' || el.tagName === 'H4') parts.push('### ' + txt);
+      else if (el.tagName === 'LI') parts.push('• ' + txt);
+      else parts.push(txt);
+    });
+    
+    parts.push('');
+    parts.push('---');
+    parts.push('Bron: ' + articleTitle);
+    parts.push(window.location.href + '#ifr-ozg-sectie-' + sectionId);
+    
+    var params = new URLSearchParams();
+    params.set('titel', sectionTitle.substring(0, 250));
+    params.set('inhoud', parts.join('\n\n').substring(0, 5000));
+    params.set('source', DOSSIER_SLUG);
+    
+    window.open('https://dossierfrankrijk.nl/nieuw?' + params.toString(), '_blank');
+    showToast('✓ Doorgestuurd naar DossierFrankrijk');
+  }
+  
+  // ===== DOSSIERFRANKRIJK: HEEL DOSSIER OPSLAAN =====
+  function saveDossierToDossier() {
+    var articleTitle = document.title || DOSSIER_TITLE;
+    var parts = [];
+    
+    parts.push('# ' + DOSSIER_TITLE);
+    parts.push('');
+    parts.push('Opgeslagen op: ' + new Date().toLocaleDateString('nl-NL'));
+    parts.push('');
+    
+    $$('.ifr-ozg-section').forEach(function(section) {
+      var h2 = section.querySelector('h2');
+      if (h2) parts.push('## ' + h2.textContent);
+      
+      section.querySelectorAll('p, li, h3, h4').forEach(function(el) {
+        var txt = (el.innerText || el.textContent || '').trim();
+        if (!txt) return;
+        if (el.tagName === 'H3' || el.tagName === 'H4') parts.push('### ' + txt);
+        else if (el.tagName === 'LI') parts.push('• ' + txt);
+        else parts.push(txt);
+      });
+      parts.push('');
+    });
+    
+    parts.push('---');
+    parts.push('Bron: ' + articleTitle);
+    parts.push(window.location.href);
+    
+    var params = new URLSearchParams();
+    params.set('titel', (DOSSIER_TITLE + ' — volledig dossier').substring(0, 250));
+    params.set('inhoud', parts.join('\n\n').substring(0, 10000));
+    params.set('source', DOSSIER_SLUG);
+    
+    window.open('https://dossierfrankrijk.nl/nieuw?' + params.toString(), '_blank');
+    showToast('✓ Doorgestuurd naar DossierFrankrijk');
+  }
+  
+  // ===== PDF DOWNLOAD =====
+  function downloadAsPdf() {
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      showToast('⚠ PDF-bibliotheek niet geladen');
+      return;
+    }
+    
+    var doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
+    var pageWidth = 210, pageHeight = 297, margin = 20;
+    var maxWidth = pageWidth - 2 * margin;
+    var y = margin;
+    
+    // Titel
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.setTextColor(128, 0, 0);
+    doc.text(DOSSIER_TITLE, margin, y);
+    y += 10;
+    
+    // Subtitel
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(80, 80, 80);
+    doc.text('Het complete dossier voor Nederlandstaligen in Frankrijk', margin, y);
+    y += 6;
+    doc.setFontSize(9);
+    doc.text('Bron: infofrankrijk.com — ' + new Date().toLocaleDateString('nl-NL'), margin, y);
+    y += 10;
+    
+    // Lijn
+    doc.setDrawColor(128, 0, 0);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 8;
+    
+    // Secties
+    $$('.ifr-ozg-section').forEach(function(section) {
+      var h2 = section.querySelector('h2');
+      if (!h2) return;
+      
+      // Nieuwe pagina indien nodig
+      if (y > pageHeight - 40) {
+        doc.addPage();
+        y = margin;
+      }
+      
+      // Sectie titel
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(128, 0, 0);
+      var titleLines = doc.splitTextToSize(h2.textContent, maxWidth);
+      doc.text(titleLines, margin, y);
+      y += titleLines.length * 6 + 3;
+      
+      // Sectie inhoud
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor(50, 50, 50);
+      
+      var paragraphs = [];
+      section.querySelectorAll('p, li, h3, h4').forEach(function(el) {
+        var txt = (el.innerText || el.textContent || '').trim();
+        if (txt) {
+          if (el.tagName === 'H3' || el.tagName === 'H4') {
+            paragraphs.push('\n' + txt.toUpperCase());
+          } else if (el.tagName === 'LI') {
+            paragraphs.push('• ' + txt);
+          } else {
+            paragraphs.push(txt);
+          }
+        }
+      });
+      
+      paragraphs.forEach(function(p) {
+        var lines = doc.splitTextToSize(p, maxWidth);
+        lines.forEach(function(line) {
+          if (y > pageHeight - margin) {
+            doc.addPage();
+            y = margin;
+          }
+          doc.text(line, margin, y);
+          y += 5;
+        });
+        y += 1;
+      });
+      
+      y += 5;
+    });
+    
+    // Paginanummers
+    var pageCount = doc.internal.getNumberOfPages();
+    for (var i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      doc.text(
+        'Infofrankrijk.com — ' + DOSSIER_TITLE + ' — pagina ' + i + ' van ' + pageCount,
+        pageWidth / 2,
+        pageHeight - 10,
+        { align: 'center' }
+      );
+    }
+    
+    doc.save('ouderenzorg-in-frankrijk-dossier.pdf');
+    showToast('✓ PDF gedownload');
+  }
+  
+  // ===== TOP ACTIES RENDEREN =====
+  function renderTopActions() {
+    var container = $('#ifr-ozg-top-actions');
+    var cta = $('#ifr-ozg-cta');
+    if (!container) return;
+    
+    var isMember = isSubscriber();
+    var lockAttr = isMember ? '' : ' data-ifr-locked="1"';
+    var tipSave = isMember ? '' : ' data-ifr-tooltip="Abonnees kunnen dossier opslaan"';
+    var tipPdf = isMember ? '' : ' data-ifr-tooltip="Abonnees kunnen PDF downloaden"';
+    
+    container.innerHTML =
+      '<button type="button" class="ifr-ozg-premium-btn" data-ifr-action="save-dossier"' + lockAttr + tipSave + '>' +
+        '<span class="ifr-ozg-premium-btn-icon">📁</span>Opslaan in DossierFrankrijk' +
+      '</button>' +
+      '<button type="button" class="ifr-ozg-premium-btn" data-ifr-action="download-pdf"' + lockAttr + tipPdf + '>' +
+        '<span class="ifr-ozg-premium-btn-icon">📄</span>Download als PDF' +
+      '</button>';
+    
+    // CTA tonen voor niet-abonnees
+    if (cta) cta.style.display = isMember ? 'none' : 'block';
+    
+    // Event listeners
+    container.querySelectorAll('[data-ifr-action]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var action = this.getAttribute('data-ifr-action');
+        if (!isSubscriber()) {
+          showPopover(action);
+          return;
+        }
+        if (action === 'save-dossier') saveDossierToDossier();
+        if (action === 'download-pdf') downloadAsPdf();
+      });
+    });
+  }
+  
+  // ===== SECTIE ACTIES INJECTEREN =====
+  function injectSectionActions() {
+    var isMember = isSubscriber();
+    
+    $$('.ifr-ozg-section-actions').forEach(function(container) {
+      var sectionId = container.getAttribute('data-ifr-section');
+      if (!sectionId) return;
+      
+      var lockAttr = isMember ? '' : ' data-ifr-locked="1"';
+      var tip = isMember ? '' : ' data-ifr-tooltip="Abonnees kunnen sectie opslaan"';
+      
+      container.innerHTML =
+        '<button type="button" class="ifr-ozg-premium-btn" data-ifr-action="save-section" data-ifr-section="' + sectionId + '"' + lockAttr + tip + '>' +
+          '<span class="ifr-ozg-premium-btn-icon">📁</span>Bewaar deze sectie' +
+        '</button>';
+      
+      var btn = container.querySelector('button');
+      btn.addEventListener('click', function() {
+        var sid = this.getAttribute('data-ifr-section');
+        if (!isSubscriber()) {
+          showPopover('save-section');
+          return;
+        }
+        saveSectionToDossier(sid);
+      });
+    });
+  }
+  
+  // ===== POPOVER SLUITERS =====
+  function initPopover() {
+    var overlay = $('#ifr-ozg-popover-overlay');
+    var closeBtn = $('#ifr-ozg-popover-close');
+    
+    if (overlay) overlay.addEventListener('click', hidePopover);
+    if (closeBtn) closeBtn.addEventListener('click', hidePopover);
+    
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') hidePopover();
+    });
+  }
+  
+  // ===== INIT =====
+  function init() {
+    renderTopActions();
+    injectSectionActions();
+    initPopover();
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+<!-- EINDE DEEL 2 -->
