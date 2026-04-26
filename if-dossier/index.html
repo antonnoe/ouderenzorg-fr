@@ -77,6 +77,13 @@
   /* Sectie-acties */
   .ifr-ozg-section-actions { margin-top: 1.2em; padding-top: 0.9em; border-top: 1px dotted rgba(128,0,0,0.2); display: flex; gap: 0.5em; flex-wrap: wrap; }
   .ifr-ozg-section-actions .ifr-ozg-premium-btn { font-size: 0.85em; padding: 0.4em 0.85em; }
+  .ifr-ozg-nav-btn { font-family: 'Mulish', sans-serif; font-size: 0.85em; background: #fff; border: 1.5px solid rgba(128,0,0,0.6); color: #800000; padding: 0.4em 0.85em; border-radius: 4px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4em; font-weight: 500; min-height: 44px; }
+  .ifr-ozg-nav-btn:hover { background: #800000; color: #fff; border-color: #800000; }
+  .ifr-ozg-nav-btn:focus-visible { outline: 2px solid #800000; outline-offset: 2px; }
+  .ifr-ozg-nav-btn-icon { font-size: 0.95em; }
+  @media (max-width: 600px) {
+    .ifr-ozg-nav-btn { font-size: 0.9em; padding: 0.5em 0.9em; }
+  }
   
   /* ===== CTA (niet-abonnees) ===== */
   .ifr-ozg-cta { background: linear-gradient(135deg, #800000, #a03030); color: #fff; padding: 1em 1.3em; margin: 1em 0 0; border-radius: 6px; display: none; font-size: 0.95em; }
@@ -163,7 +170,7 @@
 <div class="ifr-ozg-toast" id="ifr-ozg-toast" role="status" aria-live="polite"></div>
 
 <!-- ===== INHOUDSOPGAVE ===== -->
-<h2>Inhoudsopgave</h2>
+<h2 id="ifr-ozg-toc">Inhoudsopgave</h2>
 <div class="ifr-ozg-inhoudsopgave">
 <ol>
   <li><strong>Oriëntatie</strong>
@@ -1599,7 +1606,32 @@
     { id: '2', title: '2. Het Franse ouderenzorgstelsel in vogelvlucht' },
     { id: '3', title: '3. De sleutelbegrippen: APA, GIR, CLIC, EHPAD' },
     { id: '4', title: '4. Waar vind ik hulp: CLIC, mairie, CCAS' },
-    // Secties 5-30 worden later toegevoegd
+    { id: '5', title: '5. Hulp aan huis: aide ménagère, auxiliaire de vie' },
+    { id: '6', title: '6. Verpleging aan huis: SSIAD en HAD' },
+    { id: '7', title: '7. Hulpmiddelen en woningaanpassing' },
+    { id: '8', title: '8. Mantelzorg: ondersteuning voor de aidant' },
+    { id: '9', title: '9. Résidence autonomie: zelfstandig wonen met diensten' },
+    { id: '10', title: '10. Résidence services seniors: commercieel alternatief' },
+    { id: '11', title: '11. Accueil familial: wonen bij een gastgezin' },
+    { id: '12', title: '12. EHPAD: wanneer, hoe kiezen, wat verwachten' },
+    { id: '13', title: '13. Wanneer wordt terugkeer naar Nederland onverstandig of onmogelijk?' },
+    { id: '14', title: '14. De Wlz-wachttijd bij remigratie' },
+    { id: '15', title: '15. Verwijzing naar het remigratiedossier' },
+    { id: '16', title: '16. Personne de confiance: medische vertrouwenspersoon' },
+    { id: '17', title: '17. Directives anticipées: wilsverklaring medische behandeling' },
+    { id: '18', title: '18. Mandat de protection future: volmacht voor later' },
+    { id: '19', title: '19. Habilitation familiale, tutelle, curatelle' },
+    { id: '20', title: '20. Palliatieve zorg in Frankrijk' },
+    { id: '21', title: '21. Sédation profonde (Claeys-Leonetti)' },
+    { id: '22', title: '22. Praktische zaken bij overlijden' },
+    { id: '23', title: '23. Wat kost ouderenzorg in Frankrijk?' },
+    { id: '24', title: '24. APA: bedragen, eigen bijdrage, aanvraag' },
+    { id: '25', title: '25. ASH: sociale bijstand voor EHPAD' },
+    { id: '26', title: "26. Crédit d'impôt: 50% terug via belasting" },
+    { id: '27', title: '27. ASPA: minimuminkomen voor 65+' },
+    { id: '28', title: '28. Rekenvoorbeeld' },
+    { id: '29', title: '29. Checklist per fase' },
+    { id: '30', title: '30. Hulplijnen en officiële bronnen' },
   ];
   
   var DOSSIER_TITLE = 'Ouder worden in Frankrijk';
@@ -1861,6 +1893,118 @@
     });
   }
   
+  // ===== SECTIE TITEL OPZOEKEN =====
+  function getSectionTitle(sectionId) {
+    for (var i = 0; i < SECTIONS.length; i++) {
+      if (SECTIONS[i].id === String(sectionId)) return SECTIONS[i].title;
+    }
+    return 'sectie ' + sectionId;
+  }
+  
+  // ===== NAV: SCROLL NAAR INHOUDSOPGAVE =====
+  function scrollToToc() {
+    var toc = $('#ifr-ozg-toc');
+    if (toc) toc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  
+  // ===== NAV: SCROLL NAAR SECTIE =====
+  function scrollToSection(sectionId) {
+    var el = $('#ifr-ozg-sectie-' + sectionId);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  
+  // ===== NAV: STEL VRAAG VANUIT SECTIE =====
+  function askAssistantAboutSection(sectionId) {
+    var title = getSectionTitle(sectionId);
+    
+    // Onthoud waar de gebruiker was — overleeft tab-refresh
+    try {
+      sessionStorage.setItem('ozg-last-section', sectionId);
+      sessionStorage.setItem('ozg-last-section-title', title);
+    } catch(e) { /* sessionStorage kan disabled zijn — niet fataal */ }
+    
+    // Scroll naar de embed-iframe
+    var assistant = $('#ifr-ozg-assistant');
+    if (assistant) assistant.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    
+    // Stuur context naar iframe (kan in 't niets gaan tot embed-pagina bestaat)
+    var iframe = assistant && assistant.querySelector('iframe');
+    if (iframe && iframe.contentWindow) {
+      try {
+        iframe.contentWindow.postMessage({
+          type: 'ozg-context-update',
+          section: sectionId,
+          sectionTitle: title
+        }, 'https://dossierfrankrijk.nl');
+      } catch(e) { /* iframe niet klaar of cross-origin nog niet ingericht */ }
+    }
+  }
+  
+  // ===== INTERSECTION OBSERVER: HUIDIGE SECTIE TRACKEN =====
+  function initSectionObserver() {
+    if (!('IntersectionObserver' in window)) return;
+    
+    var sections = $$('section.ifr-ozg-section');
+    if (!sections.length) return;
+    
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.4) {
+          var sid = entry.target.getAttribute('data-ifr-id');
+          if (sid) {
+            try {
+              sessionStorage.setItem('ozg-current-section', sid);
+              sessionStorage.setItem('ozg-current-section-title', getSectionTitle(sid));
+            } catch(e) { /* niet fataal */ }
+          }
+        }
+      });
+    }, {
+      threshold: [0.4],
+      rootMargin: '-10% 0px -40% 0px'
+    });
+    
+    sections.forEach(function(s) { observer.observe(s); });
+  }
+  
+  // ===== POSTMESSAGE LISTENER: IFRAME → PARENT =====
+  function initIframeMessageListener() {
+    window.addEventListener('message', function(event) {
+      // Accepteer alleen berichten van de embed-origin
+      if (event.origin !== 'https://dossierfrankrijk.nl') return;
+      
+      var data = event.data;
+      if (!data || typeof data !== 'object') return;
+      
+      // Iframe vraagt om navigatie naar een sectie
+      if (data.type === 'ozg-navigate-to-section' && data.section) {
+        scrollToSection(data.section);
+      }
+      
+      // Iframe vraagt om huidige sectie (voor "terug naar..." als gebruiker
+      // gewoon naar onderen scrolde zonder op een knop te klikken)
+      if (data.type === 'ozg-request-current-section') {
+        var iframe = $('#ifr-ozg-assistant iframe');
+        if (iframe && iframe.contentWindow) {
+          var sid = '';
+          var title = '';
+          try {
+            sid = sessionStorage.getItem('ozg-current-section') || '';
+            title = sessionStorage.getItem('ozg-current-section-title') || '';
+          } catch(e) {}
+          
+          try {
+            iframe.contentWindow.postMessage({
+              type: 'ozg-context-update',
+              section: sid,
+              sectionTitle: title
+            }, 'https://dossierfrankrijk.nl');
+          } catch(e) {}
+        }
+      }
+    });
+  }
+  
   // ===== SECTIE ACTIES INJECTEREN =====
   function injectSectionActions() {
     var isMember = isSubscriber();
@@ -1873,12 +2017,32 @@
       var tip = isMember ? '' : ' data-ifr-tooltip="Abonnees kunnen sectie opslaan"';
       
       container.innerHTML =
+        '<button type="button" class="ifr-ozg-nav-btn" data-ifr-action="back-to-toc" data-ifr-section="' + sectionId + '">' +
+          '<span class="ifr-ozg-nav-btn-icon">↑</span>Terug naar index' +
+        '</button>' +
+        '<button type="button" class="ifr-ozg-nav-btn" data-ifr-action="ask-assistant" data-ifr-section="' + sectionId + '">' +
+          '<span class="ifr-ozg-nav-btn-icon">💬</span>Stel een vraag' +
+        '</button>' +
         '<button type="button" class="ifr-ozg-premium-btn" data-ifr-action="save-section" data-ifr-section="' + sectionId + '"' + lockAttr + tip + '>' +
           '<span class="ifr-ozg-premium-btn-icon">📁</span>Bewaar deze sectie' +
         '</button>';
       
-      var btn = container.querySelector('button');
-      btn.addEventListener('click', function() {
+      // Back-to-toc handler
+      var tocBtn = container.querySelector('[data-ifr-action="back-to-toc"]');
+      tocBtn.addEventListener('click', function() {
+        scrollToToc();
+      });
+      
+      // Ask-assistant handler
+      var askBtn = container.querySelector('[data-ifr-action="ask-assistant"]');
+      askBtn.addEventListener('click', function() {
+        var sid = this.getAttribute('data-ifr-section');
+        askAssistantAboutSection(sid);
+      });
+      
+      // Save-section handler (existing)
+      var saveBtn = container.querySelector('[data-ifr-action="save-section"]');
+      saveBtn.addEventListener('click', function() {
         var sid = this.getAttribute('data-ifr-section');
         if (!isSubscriber()) {
           showPopover('save-section');
@@ -1907,6 +2071,8 @@
     renderTopActions();
     injectSectionActions();
     initPopover();
+    initSectionObserver();
+    initIframeMessageListener();
   }
   
   if (document.readyState === 'loading') {

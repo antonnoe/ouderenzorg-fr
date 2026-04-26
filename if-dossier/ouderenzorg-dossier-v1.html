@@ -77,6 +77,13 @@
   /* Sectie-acties */
   .ifr-ozg-section-actions { margin-top: 1.2em; padding-top: 0.9em; border-top: 1px dotted rgba(128,0,0,0.2); display: flex; gap: 0.5em; flex-wrap: wrap; }
   .ifr-ozg-section-actions .ifr-ozg-premium-btn { font-size: 0.85em; padding: 0.4em 0.85em; }
+  .ifr-ozg-nav-btn { font-family: 'Mulish', sans-serif; font-size: 0.85em; background: #fff; border: 1.5px solid rgba(128,0,0,0.6); color: #800000; padding: 0.4em 0.85em; border-radius: 4px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4em; font-weight: 500; min-height: 44px; }
+  .ifr-ozg-nav-btn:hover { background: #800000; color: #fff; border-color: #800000; }
+  .ifr-ozg-nav-btn:focus-visible { outline: 2px solid #800000; outline-offset: 2px; }
+  .ifr-ozg-nav-btn-icon { font-size: 0.95em; }
+  @media (max-width: 600px) {
+    .ifr-ozg-nav-btn { font-size: 0.9em; padding: 0.5em 0.9em; }
+  }
   
   /* ===== CTA (niet-abonnees) ===== */
   .ifr-ozg-cta { background: linear-gradient(135deg, #800000, #a03030); color: #fff; padding: 1em 1.3em; margin: 1em 0 0; border-radius: 6px; display: none; font-size: 0.95em; }
@@ -163,7 +170,7 @@
 <div class="ifr-ozg-toast" id="ifr-ozg-toast" role="status" aria-live="polite"></div>
 
 <!-- ===== INHOUDSOPGAVE ===== -->
-<h2>Inhoudsopgave</h2>
+<h2 id="ifr-ozg-toc">Inhoudsopgave</h2>
 <div class="ifr-ozg-inhoudsopgave">
 <ol>
   <li><strong>Oriëntatie</strong>
