@@ -1,0 +1,762 @@
+<!-- ============================================================
+  INFOFRANKRIJK — Ouder worden in Frankrijk: het complete dossier
+  WordPress/Divi-klare versie V1.0 — DEEL 1 VAN 2
+  Opgesteld: april 2026
+  
+  Structuur:
+  - Geen filter (lineair dossier)
+  - DossierFrankrijk integratie (opslaan, PDF)
+  - AI-assistent widget (iframe)
+  - Abonnee-check via [ifr_member_attr]
+============================================================ -->
+
+<style>
+  /* ===== BASIS ===== */
+  .ifr-ozg { font-family: 'Mulish', sans-serif; line-height: 1.8em; color: #222; max-width: 100%; }
+  .ifr-ozg h1, .ifr-ozg h2, .ifr-ozg h3, .ifr-ozg h4 { font-family: 'Poppins', sans-serif; color: #800000; line-height: 1.3em; }
+  .ifr-ozg h1 { font-size: 2em; margin-top: 0.5em; margin-bottom: 0.5em; }
+  .ifr-ozg h2 { font-size: 1.5em; margin-top: 1.8em; margin-bottom: 0.6em; border-bottom: 2px solid rgba(128,0,0,0.2); padding-bottom: 0.3em; }
+  .ifr-ozg h3 { font-size: 1.2em; margin-top: 1.4em; margin-bottom: 0.5em; }
+  .ifr-ozg h4 { font-size: 1.05em; margin-top: 1em; margin-bottom: 0.4em; color: #800000; }
+  .ifr-ozg p { margin-bottom: 1em; }
+  .ifr-ozg a { color: #800000; text-decoration: underline; }
+  .ifr-ozg a:hover { color: #a03030; }
+  .ifr-ozg ul, .ifr-ozg ol { margin-bottom: 1em; padding-left: 1.5em; }
+  .ifr-ozg li { margin-bottom: 0.4em; }
+  
+  /* ===== KADERS ===== */
+  .ifr-ozg-kader { background: rgba(128,0,0,0.05); border-left: 4px solid #800000; padding: 1em 1.5em; margin: 1.5em 0; border-radius: 4px; }
+  .ifr-ozg-kader strong { color: #800000; }
+  .ifr-ozg-waarschuwing { background: rgba(128,0,0,0.08); border-left: 4px solid #800000; padding: 1em 1.5em; margin: 1.5em 0; border-radius: 4px; }
+  .ifr-ozg-waarschuwing strong { color: #800000; }
+  .ifr-ozg-tip { background: rgba(46,125,50,0.08); border-left: 4px solid #2e7d32; padding: 1em 1.5em; margin: 1.5em 0; border-radius: 4px; }
+  .ifr-ozg-tip strong { color: #2e7d32; }
+  
+  /* ===== TABELLEN ===== */
+  .ifr-ozg table { width: 100%; border-collapse: collapse; margin: 1.5em 0; }
+  .ifr-ozg th { background: rgba(128,0,0,0.1); color: #800000; text-align: left; padding: 0.7em; border: 1px solid rgba(128,0,0,0.2); font-family: 'Poppins', sans-serif; }
+  .ifr-ozg td { padding: 0.7em; border: 1px solid rgba(128,0,0,0.2); vertical-align: top; }
+  
+  /* ===== META ===== */
+  .ifr-ozg-meta { font-size: 0.9em; color: #666; font-style: italic; margin-bottom: 1.5em; }
+  
+  /* ===== INHOUDSOPGAVE ===== */
+  .ifr-ozg-inhoudsopgave { background: rgba(128,0,0,0.04); padding: 1em 1.5em; margin: 1em 0 2em; border-radius: 4px; }
+  .ifr-ozg-inhoudsopgave ol { padding-left: 1.5em; margin-bottom: 0; }
+  .ifr-ozg-inhoudsopgave li { margin-bottom: 0.3em; }
+  
+  /* ===== BRONNEN ===== */
+  .ifr-ozg-bronnen { background: rgba(128,0,0,0.03); padding: 1em 1.5em; margin: 2em 0 1em; border-radius: 4px; font-size: 0.95em; }
+  .ifr-ozg-bronnen ul { padding-left: 1.2em; margin-bottom: 0; }
+  .ifr-ozg-bronnen li { margin-bottom: 0.4em; }
+  
+  /* ===== SECTIES ===== */
+  .ifr-ozg-section { margin-bottom: 2em; }
+  
+  /* ===== TOPBANNER ===== */
+  .ifr-ozg-topbanner { background: rgba(128,0,0,0.05); border-left: 4px solid #800000; border-radius: 0 6px 6px 0; padding: 1em 1.3em; margin: 1.5em 0 2em; }
+  .ifr-ozg-topbanner-title { font-family: 'Poppins', sans-serif; color: #800000; font-weight: 600; font-size: 1em; margin: 0 0 0.3em; }
+  .ifr-ozg-topbanner-text { font-size: 0.93em; color: #444; margin: 0; line-height: 1.5em; }
+  
+  /* ===== PREMIUM ACTIES ===== */
+  .ifr-ozg-premium-actions { display: flex; flex-wrap: wrap; gap: 0.6em; margin-top: 0.9em; padding-top: 0.9em; border-top: 1px solid rgba(128,0,0,0.15); }
+  .ifr-ozg-premium-btn { font-family: 'Mulish', sans-serif; font-size: 0.9em; background: #fff; border: 1.5px solid #800000; color: #800000; padding: 0.5em 1em; border-radius: 4px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4em; font-weight: 500; position: relative; }
+  .ifr-ozg-premium-btn:hover { background: #800000; color: #fff; }
+  .ifr-ozg-premium-btn[data-ifr-locked="1"] { background: rgba(128,0,0,0.04); border-style: dashed; color: #888; cursor: pointer; }
+  .ifr-ozg-premium-btn[data-ifr-locked="1"]:hover { background: rgba(128,0,0,0.08); color: #800000; border-color: #800000; }
+  .ifr-ozg-premium-btn-icon { font-size: 0.9em; }
+  .ifr-ozg-premium-btn[data-ifr-locked="1"]::before { content: '🔒'; font-size: 0.85em; margin-right: 0.2em; }
+  .ifr-ozg-premium-btn[data-ifr-locked="1"]::after { content: attr(data-ifr-tooltip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 0.5em 0.8em; border-radius: 4px; font-size: 0.85em; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; z-index: 10; font-family: 'Mulish', sans-serif; font-weight: 400; }
+  .ifr-ozg-premium-btn[data-ifr-locked="1"]:hover::after { opacity: 1; }
+  
+  /* Sectie-acties */
+  .ifr-ozg-section-actions { margin-top: 1.2em; padding-top: 0.9em; border-top: 1px dotted rgba(128,0,0,0.2); display: flex; gap: 0.5em; flex-wrap: wrap; }
+  .ifr-ozg-section-actions .ifr-ozg-premium-btn { font-size: 0.85em; padding: 0.4em 0.85em; }
+  
+  /* ===== CTA (niet-abonnees) ===== */
+  .ifr-ozg-cta { background: linear-gradient(135deg, #800000, #a03030); color: #fff; padding: 1em 1.3em; margin: 1em 0 0; border-radius: 6px; display: none; font-size: 0.95em; }
+  .ifr-ozg-cta-title { font-family: 'Poppins', sans-serif; font-weight: 600; margin: 0 0 0.3em; font-size: 1em; }
+  .ifr-ozg-cta-text { margin: 0 0 0.7em; line-height: 1.5em; }
+  .ifr-ozg-cta-btn { background: #fff; color: #800000 !important; border: none; padding: 0.55em 1.2em; border-radius: 4px; font-family: 'Poppins', sans-serif; font-weight: 600; cursor: pointer; text-decoration: none !important; display: inline-block; font-size: 0.95em; transition: all 0.2s; }
+  .ifr-ozg-cta-btn:hover { background: rgba(255,255,255,0.9); color: #800000 !important; transform: translateY(-1px); }
+  
+  /* ===== POPOVER ===== */
+  .ifr-ozg-popover { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; border: 2px solid #800000; border-radius: 8px; padding: 1.8em 2em; box-shadow: 0 10px 40px rgba(0,0,0,0.3); z-index: 10000; max-width: 440px; width: 90%; display: none; }
+  .ifr-ozg-popover.ifr-ozg-visible { display: block; }
+  .ifr-ozg-popover-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 9999; display: none; }
+  .ifr-ozg-popover-overlay.ifr-ozg-visible { display: block; }
+  .ifr-ozg-popover-title { font-family: 'Poppins', sans-serif; color: #800000; font-size: 1.2em; margin: 0 0 0.6em; font-weight: 600; }
+  .ifr-ozg-popover-text { font-size: 0.95em; line-height: 1.6em; color: #333; margin: 0 0 1.2em; }
+  .ifr-ozg-popover-benefits { background: rgba(128,0,0,0.05); padding: 0.9em 1.2em; border-radius: 4px; margin: 0 0 1.2em; font-size: 0.9em; }
+  .ifr-ozg-popover-benefits strong { color: #800000; display: block; margin-bottom: 0.4em; font-family: 'Poppins', sans-serif; }
+  .ifr-ozg-popover-benefits ul { margin: 0; padding-left: 1.2em; }
+  .ifr-ozg-popover-benefits li { margin: 0.2em 0; line-height: 1.5em; }
+  .ifr-ozg-popover-actions { display: flex; gap: 0.6em; flex-wrap: wrap; justify-content: flex-end; }
+  .ifr-ozg-popover-primary { background: #800000; color: #fff !important; border: none; padding: 0.6em 1.3em; border-radius: 4px; font-family: 'Poppins', sans-serif; font-weight: 600; cursor: pointer; text-decoration: none !important; display: inline-block; font-size: 0.95em; }
+  .ifr-ozg-popover-primary:hover { background: #a03030; color: #fff !important; }
+  .ifr-ozg-popover-secondary { background: transparent; color: #555; border: 1px solid #ccc; padding: 0.6em 1.2em; border-radius: 4px; cursor: pointer; font-family: 'Mulish', sans-serif; font-size: 0.95em; }
+  .ifr-ozg-popover-secondary:hover { background: #f5f5f5; }
+  
+  /* ===== TOAST ===== */
+  .ifr-ozg-toast { position: fixed; bottom: 2em; left: 50%; transform: translateX(-50%) translateY(20px); background: #2e7d32; color: #fff; padding: 0.8em 1.5em; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 10001; opacity: 0; transition: all 0.3s; font-family: 'Mulish', sans-serif; font-size: 0.95em; }
+  .ifr-ozg-toast.ifr-ozg-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+  
+  /* ===== AI ASSISTENT ===== */
+  .ifr-ozg-assistant { background: linear-gradient(135deg, rgba(128,0,0,0.08), rgba(128,0,0,0.02)); border: 2px solid #800000; border-radius: 8px; padding: 1.5em; margin: 2em 0; }
+  .ifr-ozg-assistant-title { font-family: 'Poppins', sans-serif; color: #800000; font-size: 1.1em; font-weight: 600; margin: 0 0 0.5em; }
+  .ifr-ozg-assistant-intro { font-size: 0.95em; color: #444; margin: 0 0 1em; line-height: 1.5em; }
+  .ifr-ozg-assistant-iframe { width: 100%; height: 450px; border: none; border-radius: 6px; background: #fff; }
+  
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 640px) {
+    .ifr-ozg h1 { font-size: 1.6em; }
+    .ifr-ozg h2 { font-size: 1.3em; }
+    .ifr-ozg-premium-actions { flex-direction: column; }
+  }
+</style>
+
+<div class="ifr-ozg" [ifr_member_attr]>
+
+<h1>Ouder worden in Frankrijk: het complete dossier</h1>
+
+<p class="ifr-ozg-meta">Peildatum: april 2026 | Status: Geconsolideerd dossier V1.0 | Doelgroep: Nederlandstalige senioren (60+) in Frankrijk en hun mantelzorgers</p>
+
+<!-- ===== TOPBANNER ===== -->
+<div class="ifr-ozg-topbanner" id="ifr-ozg-topbanner">
+  <p class="ifr-ozg-topbanner-title">📋 Dit dossier bevat 30 secties over ouderenzorg in Frankrijk</p>
+  <p class="ifr-ozg-topbanner-text">Van oriëntatie tot levenseinde, van hulp aan huis tot EHPAD, van APA tot erfrecht. Lees lineair of spring naar het onderwerp dat u zoekt.</p>
+  <div class="ifr-ozg-premium-actions" id="ifr-ozg-top-actions"></div>
+</div>
+
+<!-- ===== CTA (niet-abonnees) ===== -->
+<div class="ifr-ozg-cta" id="ifr-ozg-cta">
+  <p class="ifr-ozg-cta-title">🔓 Haal meer uit dit dossier als Infofrankrijk-abonnee</p>
+  <p class="ifr-ozg-cta-text">Als abonnee kunt u secties opslaan in uw persoonlijke dossier, het hele dossier downloaden als PDF en alle artikelen op Infofrankrijk volledig lezen — voor €49 per jaar.</p>
+  <a href="https://infofrankrijk.com/abonnement/" class="ifr-ozg-cta-btn" target="_blank" rel="noopener">Word abonnee →</a>
+</div>
+
+<!-- ===== POPOVER + TOAST ===== -->
+<div class="ifr-ozg-popover-overlay" id="ifr-ozg-popover-overlay"></div>
+<div class="ifr-ozg-popover" id="ifr-ozg-popover" role="dialog" aria-labelledby="ifr-ozg-popover-title">
+  <p class="ifr-ozg-popover-title" id="ifr-ozg-popover-title">🔒 Deze functie is voor abonnees</p>
+  <p class="ifr-ozg-popover-text" id="ifr-ozg-popover-text">Sla secties op in uw persoonlijke dossier en download als PDF. Beschikbaar voor Infofrankrijk-abonnees.</p>
+  <div class="ifr-ozg-popover-benefits">
+    <strong>Abonnement omvat:</strong>
+    <ul>
+      <li>Toegang tot alle artikelen op Infofrankrijk</li>
+      <li>Persoonlijk dossier: secties opslaan voor later</li>
+      <li>PDF-download van dossiers</li>
+      <li>Wekelijkse Café Jeudi virtuele meetup</li>
+      <li>Updates bij wijzigingen in regelgeving</li>
+    </ul>
+  </div>
+  <div class="ifr-ozg-popover-actions">
+    <button type="button" class="ifr-ozg-popover-secondary" id="ifr-ozg-popover-close">Later</button>
+    <a href="https://infofrankrijk.com/abonnement/" class="ifr-ozg-popover-primary" target="_blank" rel="noopener">Word abonnee voor €49/jaar</a>
+  </div>
+</div>
+<div class="ifr-ozg-toast" id="ifr-ozg-toast" role="status" aria-live="polite"></div>
+
+<!-- ===== INHOUDSOPGAVE ===== -->
+<h2>Inhoudsopgave</h2>
+<div class="ifr-ozg-inhoudsopgave">
+<ol>
+  <li><strong>Oriëntatie</strong>
+    <ol>
+      <li><a href="#ifr-ozg-sectie-1">Waarom dit dossier — en waarom op tijd beginnen</a></li>
+      <li><a href="#ifr-ozg-sectie-2">Het Franse ouderenzorgstelsel in vogelvlucht</a></li>
+      <li><a href="#ifr-ozg-sectie-3">De sleutelbegrippen: APA, GIR, CLIC, EHPAD</a></li>
+      <li><a href="#ifr-ozg-sectie-4">Waar vind ik hulp: CLIC, mairie, CCAS</a></li>
+    </ol>
+  </li>
+  <li><strong>Hulp aan huis</strong> (secties 5-8)</li>
+  <li><strong>Woonvormen met zorg</strong> (secties 9-12)</li>
+  <li><strong>Terugkeer naar Nederland</strong> (secties 13-15)</li>
+  <li><strong>Juridische voorbereiding</strong> (secties 16-19)</li>
+  <li><strong>Levenseinde</strong> (secties 20-22)</li>
+  <li><strong>Financieel overzicht</strong> (secties 23-28)</li>
+  <li><strong>Praktisch</strong> (secties 29-30)</li>
+</ol>
+</div>
+
+<!-- =====================================================
+     DEEL A — ORIËNTATIE (Secties 1-4)
+     ===================================================== -->
+
+<section class="ifr-ozg-section" id="ifr-ozg-sectie-1" data-ifr-id="1">
+<h2>1. Waarom dit dossier — en waarom op tijd beginnen</h2>
+
+<p>Frankrijk heeft een van de meest uitgebreide ouderenzorgstelsels van Europa. Er bestaan tientallen regelingen, diensten en woonvormen — van hulp aan huis tot palliatieve zorg, van gemeentelijke bijstand tot fiscale voordelen. Maar juist die rijkdom maakt het stelsel ondoorzichtig, vooral voor wie het in een andere taal moet navigeren.</p>
+
+<p>Dit dossier is geschreven voor Nederlandstalige senioren in Frankrijk en hun kinderen of mantelzorgers. Het doel: u in staat stellen om tijdig de juiste keuzes te maken, voordat een crisis u dwingt om onder druk te beslissen.</p>
+
+<div class="ifr-ozg-kader">
+<p><strong>In het kort.</strong> Ouderenzorg in Frankrijk is geen eenvoudige kwestie van "naar het verpleeghuis gaan". Er zijn gradaties: hulp aan huis, dagopvang, aangepast wonen, EHPAD. Elke stap heeft eigen financiering, eigen aanvraagprocedures, eigen wachtlijsten. Wie pas gaat zoeken wanneer de nood hoog is, komt terecht in een doolhof zonder kaart.</p>
+</div>
+
+<p>Er zijn drie redenen om nu te beginnen met oriënteren:</p>
+
+<ol>
+<li><strong>Wachtlijsten.</strong> Voor EHPAD's in populaire regio's kunnen wachttijden oplopen tot twee jaar. Een APA-aanvraag duurt gemiddeld twee maanden. Een woningaanpassing via MaPrimeAdapt' vergt maanden voorbereiding.</li>
+<li><strong>Juridische voorbereiding.</strong> Een <em>mandat de protection future</em> (volmacht voor later) kunt u alleen opstellen zolang u wilsbekwaam bent. Wacht u te lang, dan rest alleen de zwaardere route via de rechter.</li>
+<li><strong>Financiële planning.</strong> De kosten van ouderenzorg in Frankrijk kunnen oplopen tot €3.000-4.000 per maand voor een EHPAD. Tegemoetkomingen bestaan, maar kennen inkomensgrenzen en terugvorderingsregels. Wie dit niet kent, kan onaangenaam verrast worden — of geld laten liggen.</li>
+</ol>
+
+<div class="ifr-ozg-waarschuwing">
+<p><strong>Disclaimer.</strong> Dit dossier is geen juridisch, fiscaal of medisch advies. De informatie is gebaseerd op officiële Franse overheidsbronnen (zie sectie 30), maar uw persoonlijke situatie kan afwijkingen vragen. Voor complexe dossiers is professioneel advies onmisbaar.</p>
+</div>
+
+<div class="ifr-ozg-section-actions" data-ifr-section="1"></div>
+</section>
+
+<section class="ifr-ozg-section" id="ifr-ozg-sectie-2" data-ifr-id="2">
+<h2>2. Het Franse ouderenzorgstelsel in vogelvlucht</h2>
+
+<p>Het Franse stelsel kent drie pijlers, elk met een eigen financieringsbron:</p>
+
+<table>
+<thead>
+<tr><th>Pijler</th><th>Wat</th><th>Wie betaalt</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Sécurité sociale</strong></td><td>Medische zorg: huisarts, ziekenhuis, verpleging aan huis (SSIAD), palliatieve zorg</td><td>CPAM (ziektekostenverzekering)</td></tr>
+<tr><td><strong>Département</strong></td><td>APA (zorgbudget), ASH (bijstand EHPAD), sociale diensten</td><td>Departementale belasting</td></tr>
+<tr><td><strong>Uzelf</strong></td><td>Niet-medische hulp, wonen, dagelijks leven</td><td>Eigen middelen, deels terugbetaalbaar via crédit d'impôt</td></tr>
+</tbody>
+</table>
+
+<h3>2.1 Wat is gratis (of bijna gratis)</h3>
+
+<p>De volgende zorg wordt volledig vergoed door de Sécurité sociale:</p>
+<ul>
+<li><strong>SSIAD</strong> — Service de soins infirmiers à domicile: verpleging aan huis (wondverzorging, medicatie, hygiëne)</li>
+<li><strong>HAD</strong> — Hospitalisation à domicile: ziekenhuiszorg aan huis bij complexe medische situaties</li>
+<li><strong>Soins palliatifs</strong> — palliatieve zorg, waar ook verleend</li>
+<li><strong>Consultaties</strong> bij huisarts, specialist (mits parcours de soins)</li>
+</ul>
+
+<h3>2.2 Wat u zelf (mee)betaalt</h3>
+
+<p>De volgende kosten komen geheel of gedeeltelijk voor uw rekening:</p>
+<ul>
+<li><strong>Hulp aan huis</strong> — aide ménagère, auxiliaire de vie: huishoudelijke hulp, boodschappen, gezelschap. Deels te financieren via APA of caisse de retraite.</li>
+<li><strong>Hébergement in EHPAD</strong> — de woonfunctie (kamer, maaltijden, animatie). Dit is níet medisch en dus niet via Sécu.</li>
+<li><strong>Tarif dépendance in EHPAD</strong> — de zorgintensiteit. GIR 5-6 betaalt u volledig zelf; GIR 1-4 deels via APA.</li>
+</ul>
+
+<h3>2.3 De rol van het département</h3>
+
+<p>Anders dan in Nederland, waar de gemeente een centrale rol speelt, is in Frankrijk het <strong>département</strong> (vergelijkbaar met de provincie) verantwoordelijk voor ouderenzorg. Het département:</p>
+<ul>
+<li>Verstrekt de APA (zorgbudget voor 60+)</li>
+<li>Verstrekt de ASH (bijstand voor EHPAD-kosten)</li>
+<li>Coördineert de CLIC's (loketten voor ouderenzorg)</li>
+<li>Erkent en controleert EHPAD's</li>
+</ul>
+
+<p>De kwaliteit en snelheid van dienstverlening verschilt per département. Sommige zijn goed georganiseerd, andere kampen met achterstanden.</p>
+
+<div class="ifr-ozg-tip">
+<p><strong>Tip.</strong> Op de website <a href="https://www.pour-les-personnes-agees.gouv.fr" target="_blank" rel="noopener">pour-les-personnes-agees.gouv.fr</a> vindt u per postcode de contactgegevens van uw CLIC, de EHPAD's in uw regio, en de geldende tarieven. Dit is de officiële overheidsbron.</p>
+</div>
+
+<div class="ifr-ozg-section-actions" data-ifr-section="2"></div>
+</section>
+
+<section class="ifr-ozg-section" id="ifr-ozg-sectie-3" data-ifr-id="3">
+<h2>3. De sleutelbegrippen: APA, GIR, CLIC, EHPAD</h2>
+
+<p>Vier afkortingen komen steeds terug. Als u deze kent, begrijpt u de kern van het Franse stelsel.</p>
+
+<h3>3.1 APA — Allocation personnalisée d'autonomie</h3>
+
+<p>De APA is het belangrijkste financieringsinstrument voor ouderenzorg in Frankrijk. Het is een maandelijks budget, toegekend door het département, waarmee u hulp aan huis of zorg in een EHPAD kunt bekostigen.</p>
+
+<table>
+<thead>
+<tr><th>Kenmerk</th><th>Details</th></tr>
+</thead>
+<tbody>
+<tr><td>Leeftijd</td><td>60 jaar of ouder</td></tr>
+<tr><td>Voorwaarde</td><td>GIR 1-4 (zie hieronder)</td></tr>
+<tr><td>Inkomen</td><td>Geen inkomensgrens voor toegang, wél voor eigen bijdrage</td></tr>
+<tr><td>Maximumbedragen 2026</td><td>GIR 1: €2.080,33/maand | GIR 2: €1.682,30 | GIR 3: €1.215,99 | GIR 4: €811,52</td></tr>
+<tr><td>Eigen bijdrage</td><td>Geen bij inkomen onder €933,89/maand; daarboven inkomensafhankelijk</td></tr>
+<tr><td>Waar aanvragen</td><td>Conseil départemental of via CLIC</td></tr>
+</tbody>
+</table>
+
+<p>De APA is geen vast bedrag maar een <em>plan d'aide</em>: een pakket hulp op maat, vastgesteld na huisbezoek door een équipe médico-sociale van het département.</p>
+
+<h3>3.2 GIR — Groupe iso-ressources</h3>
+
+<p>De GIR is de Franse maatstaf voor zorgafhankelijkheid. Een beoordelaar (meestal een arts of verpleegkundige) stelt vast in welke GIR-categorie iemand valt, op basis van de AGGIR-grid.</p>
+
+<table>
+<thead>
+<tr><th>GIR</th><th>Betekenis</th><th>Recht op APA</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>Bedlegerig of ernstige cognitieve stoornis, volledige afhankelijkheid</td><td>Ja</td></tr>
+<tr><td>2</td><td>Grotendeels afhankelijk, intensieve hulp nodig bij ADL</td><td>Ja</td></tr>
+<tr><td>3</td><td>Gedeeltelijk afhankelijk, dagelijkse hulp nodig</td><td>Ja</td></tr>
+<tr><td>4</td><td>Beperkt afhankelijk, hulp bij specifieke taken</td><td>Ja</td></tr>
+<tr><td>5</td><td>Licht hulpbehoevend, enige ondersteuning</td><td>Nee (wel andere regelingen)</td></tr>
+<tr><td>6</td><td>Zelfstandig</td><td>Nee</td></tr>
+</tbody>
+</table>
+
+<p>De GIR-beoordeling is geen medische diagnose maar een functionele inschatting: wat kan iemand zelf, waar is hulp nodig?</p>
+
+<h3>3.3 CLIC — Centre local d'information et de coordination</h3>
+
+<p>Het CLIC is uw eerste aanspreekpunt voor alle vragen over ouderenzorg. Het is een gratis, openbaar loket waar u:</p>
+<ul>
+<li>Informatie krijgt over regelingen en diensten</li>
+<li>Hulp krijgt bij het invullen van aanvraagformulieren</li>
+<li>Doorverwezen wordt naar de juiste instanties</li>
+<li>Advies krijgt over woonvormen</li>
+</ul>
+
+<p>Elk département heeft meerdere CLIC's. Sommige heten anders (MAIA, Maison des aînés, Point info seniors) maar de functie is vergelijkbaar.</p>
+
+<div class="ifr-ozg-kader">
+<p><strong>Vind uw CLIC.</strong> Ga naar <a href="https://www.pour-les-personnes-agees.gouv.fr/annuaire-points-information-locaux" target="_blank" rel="noopener">pour-les-personnes-agees.gouv.fr/annuaire</a> en voer uw postcode in.</p>
+</div>
+
+<h3>3.4 EHPAD — Établissement d'hébergement pour personnes âgées dépendantes</h3>
+
+<p>Een EHPAD is een verzorgingshuis met 24-uurs medische zorg. Het is bedoeld voor mensen die niet meer zelfstandig kunnen wonen, doorgaans GIR 1-4.</p>
+
+<p>De kosten van een EHPAD bestaan uit drie delen:</p>
+
+<table>
+<thead>
+<tr><th>Component</th><th>Wat</th><th>Wie betaalt</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Tarif hébergement</strong></td><td>Kamer, maaltijden, animatie, schoonmaak</td><td>Bewoner (evt. ASH bij laag inkomen)</td></tr>
+<tr><td><strong>Tarif dépendance</strong></td><td>Hulp bij ADL, zorgintensiteit</td><td>Bewoner (GIR 5-6) of deels APA (GIR 1-4)</td></tr>
+<tr><td><strong>Tarif soins</strong></td><td>Medische zorg, verpleging</td><td>Sécurité sociale (100%)</td></tr>
+</tbody>
+</table>
+
+<p>Het gemiddelde tarif hébergement in Frankrijk bedraagt circa €2.000-2.500 per maand, maar varieert sterk per regio (duurder in Île-de-France, goedkoper in landelijke gebieden).</p>
+
+<div class="ifr-ozg-section-actions" data-ifr-section="3"></div>
+</section>
+
+<section class="ifr-ozg-section" id="ifr-ozg-sectie-4" data-ifr-id="4">
+<h2>4. Waar vind ik hulp: CLIC, mairie, CCAS</h2>
+
+<p>In Frankrijk zijn er meerdere loketten waar u terecht kunt met vragen over ouderenzorg. De belangrijkste:</p>
+
+<h3>4.1 CLIC (of equivalent)</h3>
+
+<p>Zoals beschreven in sectie 3.3: dit is het gespecialiseerde ouderenzorgloket van het département. Start hier voor alle vragen over APA, EHPAD, hulp aan huis.</p>
+
+<p><strong>Hoe vinden:</strong></p>
+<ul>
+<li>Online: <a href="https://www.pour-les-personnes-agees.gouv.fr/annuaire-points-information-locaux" target="_blank" rel="noopener">pour-les-personnes-agees.gouv.fr/annuaire</a></li>
+<li>Bellen: het algemene nummer van uw département</li>
+<li>Via de mairie (zie hieronder)</li>
+</ul>
+
+<h3>4.2 Mairie (gemeentehuis)</h3>
+
+<p>De mairie is het eerste aanspreekpunt voor veel administratieve zaken. Voor ouderenzorg kan de mairie u doorverwijzen naar het CLIC of CCAS. In kleine gemeenten zonder eigen CCAS neemt de mairie soms zelf deze rol op zich.</p>
+
+<h3>4.3 CCAS — Centre communal d'action sociale</h3>
+
+<p>Het CCAS is de sociale dienst van de gemeente. Niet elke gemeente heeft er een (vooral kleine gemeenten niet), maar waar het bestaat, kan het CCAS:</p>
+<ul>
+<li>Helpen bij het aanvragen van APA en andere uitkeringen</li>
+<li>Portage de repas (maaltijdbezorging) organiseren</li>
+<li>Huisbezoeken doen bij kwetsbare ouderen</li>
+<li>Doorverwijzen naar andere diensten</li>
+</ul>
+
+<h3>4.4 Huisarts (médecin traitant)</h3>
+
+<p>Uw huisarts is de toegangspoort tot medische zorg. Voor verpleging aan huis (SSIAD), hulpmiddelen en verwijzingen naar specialisten heeft u een voorschrift van de huisarts nodig.</p>
+
+<h3>4.5 Caisse de retraite (pensioenfonds)</h3>
+
+<p>De Franse pensioenfondsen (CARSAT voor werknemers, MSA voor agrariërs, Agirc-Arrco voor aanvullend pensioen) bieden ook ondersteuning aan gepensioneerden:</p>
+<ul>
+<li>Hulp aan huis voor GIR 5-6 (wie geen recht heeft op APA)</li>
+<li>Eenmalige financiële bijstand</li>
+<li>Advies over preventie</li>
+</ul>
+
+<p>Dit is vooral relevant voor wie nog relatief zelfstandig is maar wat ondersteuning kan gebruiken.</p>
+
+<div class="ifr-ozg-tip">
+<p><strong>Tip voor Nederlanders.</strong> Veel instanties zijn gewend aan buitenlanders en hebben soms medewerkers die Engels spreken. Het CLIC is doorgaans het meest toegankelijk. Neem iemand mee die Frans spreekt als u twijfelt over uw taalvaardigheid.</p>
+</div>
+
+<div class="ifr-ozg-kader">
+<p><strong>Mijn Zorgkompas.</strong> Infofrankrijk biedt een interactieve tool — <a href="https://infofrankrijk.com/mijn-zorgkompas/" target="_blank" rel="noopener">Mijn Zorgkompas</a> — die u helpt bij de voorbereiding van een gesprek met het CLIC. U krijgt een overzicht van benodigde documenten, relevante vragen en de contactgegevens van uw lokale CLIC.</p>
+</div>
+
+<div class="ifr-ozg-section-actions" data-ifr-section="4"></div>
+</section>
+
+<!-- =====================================================
+     EINDE DEEL 1 — Secties 5-30 volgen in deel 2
+     ===================================================== -->
+
+<!-- ===== AI ASSISTENT ===== -->
+<div class="ifr-ozg-assistant" id="ifr-ozg-assistant">
+  <p class="ifr-ozg-assistant-title">💬 Vragen over dit dossier?</p>
+  <p class="ifr-ozg-assistant-intro">De dossier-assistent helpt u navigeren door de informatie. Stel een vraag over ouderenzorg in Frankrijk — de assistent verwijst u naar de juiste sectie of legt begrippen uit.</p>
+  <iframe 
+    src="https://dossierfrankrijk.nl/embed/ouderenzorg" 
+    class="ifr-ozg-assistant-iframe"
+    title="Dossier Assistent"
+    loading="lazy"
+  ></iframe>
+</div>
+
+</div>
+<!-- einde .ifr-ozg -->
+<!-- ============================================================
+  INFOFRANKRIJK — Ouder worden in Frankrijk: het complete dossier
+  WordPress/Divi-klare versie V1.0 — DEEL 2 VAN 2
+  JavaScript: DossierFrankrijk integratie, PDF, premium-functies
+  
+  Plak dit direct na deel 1.
+============================================================ -->
+
+<!-- jsPDF voor PDF-export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+(function() {
+  'use strict';
+  
+  // ===== SECTIE METADATA =====
+  var SECTIONS = [
+    { id: '1', title: '1. Waarom dit dossier — en waarom op tijd beginnen' },
+    { id: '2', title: '2. Het Franse ouderenzorgstelsel in vogelvlucht' },
+    { id: '3', title: '3. De sleutelbegrippen: APA, GIR, CLIC, EHPAD' },
+    { id: '4', title: '4. Waar vind ik hulp: CLIC, mairie, CCAS' },
+    // Secties 5-30 worden later toegevoegd
+  ];
+  
+  var DOSSIER_TITLE = 'Ouder worden in Frankrijk';
+  var DOSSIER_SLUG = 'ouderenzorg-frankrijk';
+  
+  function $(s) { return document.querySelector(s); }
+  function $$(s) { return document.querySelectorAll(s); }
+  
+  // ===== ABONNEE CHECK =====
+  function isSubscriber() {
+    var root = $('.ifr-ozg');
+    return root && root.getAttribute('data-ifr-member') === '1';
+  }
+  
+  // ===== TOAST =====
+  function showToast(msg) {
+    var t = $('#ifr-ozg-toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('ifr-ozg-visible');
+    setTimeout(function() { t.classList.remove('ifr-ozg-visible'); }, 3000);
+  }
+  
+  // ===== POPOVER =====
+  function showPopover(action) {
+    var overlay = $('#ifr-ozg-popover-overlay');
+    var popover = $('#ifr-ozg-popover');
+    var textEl = $('#ifr-ozg-popover-text');
+    
+    if (action === 'save-section') {
+      textEl.textContent = 'Sla deze sectie op in uw persoonlijke dossier zodat u hem later kunt terugvinden.';
+    } else if (action === 'save-dossier') {
+      textEl.textContent = 'Sla het volledige dossier op in uw persoonlijke DossierFrankrijk, zodat u het later kunt raadplegen.';
+    } else if (action === 'download-pdf') {
+      textEl.textContent = 'Download het dossier als overzichtelijke PDF — om offline door te nemen, uit te printen, of te delen.';
+    } else {
+      textEl.textContent = 'Deze functie is beschikbaar voor abonnees van Infofrankrijk.';
+    }
+    
+    if (overlay) overlay.classList.add('ifr-ozg-visible');
+    if (popover) popover.classList.add('ifr-ozg-visible');
+  }
+  
+  function hidePopover() {
+    var o = $('#ifr-ozg-popover-overlay');
+    var p = $('#ifr-ozg-popover');
+    if (o) o.classList.remove('ifr-ozg-visible');
+    if (p) p.classList.remove('ifr-ozg-visible');
+  }
+  
+  // ===== DOSSIERFRANKRIJK: SECTIE OPSLAAN =====
+  function saveSectionToDossier(sectionId) {
+    var section = document.querySelector('[data-ifr-id="' + sectionId + '"]');
+    if (!section) return;
+    
+    var h2 = section.querySelector('h2');
+    var sectionTitle = h2 ? h2.textContent : 'Sectie ' + sectionId;
+    var articleTitle = document.title || DOSSIER_TITLE;
+    
+    var parts = [];
+    section.querySelectorAll('p, li, h3, h4').forEach(function(el) {
+      var txt = (el.innerText || el.textContent || '').trim();
+      if (!txt) return;
+      if (el.tagName === 'H3' || el.tagName === 'H4') parts.push('### ' + txt);
+      else if (el.tagName === 'LI') parts.push('• ' + txt);
+      else parts.push(txt);
+    });
+    
+    parts.push('');
+    parts.push('---');
+    parts.push('Bron: ' + articleTitle);
+    parts.push(window.location.href + '#ifr-ozg-sectie-' + sectionId);
+    
+    var params = new URLSearchParams();
+    params.set('titel', sectionTitle.substring(0, 250));
+    params.set('inhoud', parts.join('\n\n').substring(0, 5000));
+    params.set('source', DOSSIER_SLUG);
+    
+    window.open('https://dossierfrankrijk.nl/nieuw?' + params.toString(), '_blank');
+    showToast('✓ Doorgestuurd naar DossierFrankrijk');
+  }
+  
+  // ===== DOSSIERFRANKRIJK: HEEL DOSSIER OPSLAAN =====
+  function saveDossierToDossier() {
+    var articleTitle = document.title || DOSSIER_TITLE;
+    var parts = [];
+    
+    parts.push('# ' + DOSSIER_TITLE);
+    parts.push('');
+    parts.push('Opgeslagen op: ' + new Date().toLocaleDateString('nl-NL'));
+    parts.push('');
+    
+    $$('.ifr-ozg-section').forEach(function(section) {
+      var h2 = section.querySelector('h2');
+      if (h2) parts.push('## ' + h2.textContent);
+      
+      section.querySelectorAll('p, li, h3, h4').forEach(function(el) {
+        var txt = (el.innerText || el.textContent || '').trim();
+        if (!txt) return;
+        if (el.tagName === 'H3' || el.tagName === 'H4') parts.push('### ' + txt);
+        else if (el.tagName === 'LI') parts.push('• ' + txt);
+        else parts.push(txt);
+      });
+      parts.push('');
+    });
+    
+    parts.push('---');
+    parts.push('Bron: ' + articleTitle);
+    parts.push(window.location.href);
+    
+    var params = new URLSearchParams();
+    params.set('titel', (DOSSIER_TITLE + ' — volledig dossier').substring(0, 250));
+    params.set('inhoud', parts.join('\n\n').substring(0, 10000));
+    params.set('source', DOSSIER_SLUG);
+    
+    window.open('https://dossierfrankrijk.nl/nieuw?' + params.toString(), '_blank');
+    showToast('✓ Doorgestuurd naar DossierFrankrijk');
+  }
+  
+  // ===== PDF DOWNLOAD =====
+  function downloadAsPdf() {
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      showToast('⚠ PDF-bibliotheek niet geladen');
+      return;
+    }
+    
+    var doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
+    var pageWidth = 210, pageHeight = 297, margin = 20;
+    var maxWidth = pageWidth - 2 * margin;
+    var y = margin;
+    
+    // Titel
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.setTextColor(128, 0, 0);
+    doc.text(DOSSIER_TITLE, margin, y);
+    y += 10;
+    
+    // Subtitel
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(80, 80, 80);
+    doc.text('Het complete dossier voor Nederlandstaligen in Frankrijk', margin, y);
+    y += 6;
+    doc.setFontSize(9);
+    doc.text('Bron: infofrankrijk.com — ' + new Date().toLocaleDateString('nl-NL'), margin, y);
+    y += 10;
+    
+    // Lijn
+    doc.setDrawColor(128, 0, 0);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 8;
+    
+    // Secties
+    $$('.ifr-ozg-section').forEach(function(section) {
+      var h2 = section.querySelector('h2');
+      if (!h2) return;
+      
+      // Nieuwe pagina indien nodig
+      if (y > pageHeight - 40) {
+        doc.addPage();
+        y = margin;
+      }
+      
+      // Sectie titel
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(128, 0, 0);
+      var titleLines = doc.splitTextToSize(h2.textContent, maxWidth);
+      doc.text(titleLines, margin, y);
+      y += titleLines.length * 6 + 3;
+      
+      // Sectie inhoud
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor(50, 50, 50);
+      
+      var paragraphs = [];
+      section.querySelectorAll('p, li, h3, h4').forEach(function(el) {
+        var txt = (el.innerText || el.textContent || '').trim();
+        if (txt) {
+          if (el.tagName === 'H3' || el.tagName === 'H4') {
+            paragraphs.push('\n' + txt.toUpperCase());
+          } else if (el.tagName === 'LI') {
+            paragraphs.push('• ' + txt);
+          } else {
+            paragraphs.push(txt);
+          }
+        }
+      });
+      
+      paragraphs.forEach(function(p) {
+        var lines = doc.splitTextToSize(p, maxWidth);
+        lines.forEach(function(line) {
+          if (y > pageHeight - margin) {
+            doc.addPage();
+            y = margin;
+          }
+          doc.text(line, margin, y);
+          y += 5;
+        });
+        y += 1;
+      });
+      
+      y += 5;
+    });
+    
+    // Paginanummers
+    var pageCount = doc.internal.getNumberOfPages();
+    for (var i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      doc.text(
+        'Infofrankrijk.com — ' + DOSSIER_TITLE + ' — pagina ' + i + ' van ' + pageCount,
+        pageWidth / 2,
+        pageHeight - 10,
+        { align: 'center' }
+      );
+    }
+    
+    doc.save('ouderenzorg-in-frankrijk-dossier.pdf');
+    showToast('✓ PDF gedownload');
+  }
+  
+  // ===== TOP ACTIES RENDEREN =====
+  function renderTopActions() {
+    var container = $('#ifr-ozg-top-actions');
+    var cta = $('#ifr-ozg-cta');
+    if (!container) return;
+    
+    var isMember = isSubscriber();
+    var lockAttr = isMember ? '' : ' data-ifr-locked="1"';
+    var tipSave = isMember ? '' : ' data-ifr-tooltip="Abonnees kunnen dossier opslaan"';
+    var tipPdf = isMember ? '' : ' data-ifr-tooltip="Abonnees kunnen PDF downloaden"';
+    
+    container.innerHTML =
+      '<button type="button" class="ifr-ozg-premium-btn" data-ifr-action="save-dossier"' + lockAttr + tipSave + '>' +
+        '<span class="ifr-ozg-premium-btn-icon">📁</span>Opslaan in DossierFrankrijk' +
+      '</button>' +
+      '<button type="button" class="ifr-ozg-premium-btn" data-ifr-action="download-pdf"' + lockAttr + tipPdf + '>' +
+        '<span class="ifr-ozg-premium-btn-icon">📄</span>Download als PDF' +
+      '</button>';
+    
+    // CTA tonen voor niet-abonnees
+    if (cta) cta.style.display = isMember ? 'none' : 'block';
+    
+    // Event listeners
+    container.querySelectorAll('[data-ifr-action]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var action = this.getAttribute('data-ifr-action');
+        if (!isSubscriber()) {
+          showPopover(action);
+          return;
+        }
+        if (action === 'save-dossier') saveDossierToDossier();
+        if (action === 'download-pdf') downloadAsPdf();
+      });
+    });
+  }
+  
+  // ===== SECTIE ACTIES INJECTEREN =====
+  function injectSectionActions() {
+    var isMember = isSubscriber();
+    
+    $$('.ifr-ozg-section-actions').forEach(function(container) {
+      var sectionId = container.getAttribute('data-ifr-section');
+      if (!sectionId) return;
+      
+      var lockAttr = isMember ? '' : ' data-ifr-locked="1"';
+      var tip = isMember ? '' : ' data-ifr-tooltip="Abonnees kunnen sectie opslaan"';
+      
+      container.innerHTML =
+        '<button type="button" class="ifr-ozg-premium-btn" data-ifr-action="save-section" data-ifr-section="' + sectionId + '"' + lockAttr + tip + '>' +
+          '<span class="ifr-ozg-premium-btn-icon">📁</span>Bewaar deze sectie' +
+        '</button>';
+      
+      var btn = container.querySelector('button');
+      btn.addEventListener('click', function() {
+        var sid = this.getAttribute('data-ifr-section');
+        if (!isSubscriber()) {
+          showPopover('save-section');
+          return;
+        }
+        saveSectionToDossier(sid);
+      });
+    });
+  }
+  
+  // ===== POPOVER SLUITERS =====
+  function initPopover() {
+    var overlay = $('#ifr-ozg-popover-overlay');
+    var closeBtn = $('#ifr-ozg-popover-close');
+    
+    if (overlay) overlay.addEventListener('click', hidePopover);
+    if (closeBtn) closeBtn.addEventListener('click', hidePopover);
+    
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') hidePopover();
+    });
+  }
+  
+  // ===== INIT =====
+  function init() {
+    renderTopActions();
+    injectSectionActions();
+    initPopover();
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+<!-- EINDE DEEL 2 -->
