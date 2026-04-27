@@ -1941,12 +1941,13 @@
     var assistant = $('#ifr-ozg-assistant');
     if (assistant) assistant.scrollIntoView({ behavior: 'smooth', block: 'start' });
     
-    // Stuur context naar iframe (kan in 't niets gaan tot embed-pagina bestaat)
+    // Stuur expliciete vraag-trigger naar iframe — embed reset hierop
+    // naar home-view zodat gebruiker een nieuwe vraag kan kiezen.
     var iframe = assistant && assistant.querySelector('iframe');
     if (iframe && iframe.contentWindow) {
       try {
         iframe.contentWindow.postMessage({
-          type: 'ozg-context-update',
+          type: 'ozg-ask-about-section',
           section: sectionId,
           sectionTitle: title
         }, getEmbedTargetOrigin(iframe));
