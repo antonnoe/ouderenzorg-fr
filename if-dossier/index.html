@@ -1913,6 +1913,20 @@
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   
+  // ===== HELPER: bepaal iframe-targetOrigin op basis van src =====
+  // Vercel redirect dossierfrankrijk.nl → www.dossierfrankrijk.nl (307).
+  // Browser sluit cross-origin postMessage met verkeerde targetOrigin stilletjes.
+  // Dus leiden we de targetOrigin af uit de werkelijke iframe-src URL.
+  function getEmbedTargetOrigin(iframe) {
+    if (!iframe) return 'https://www.dossierfrankrijk.nl';
+    try {
+      var u = new URL(iframe.getAttribute('src'));
+      return u.origin;
+    } catch(e) {
+      return 'https://www.dossierfrankrijk.nl';
+    }
+  }
+  
   // ===== NAV: STEL VRAAG VANUIT SECTIE =====
   function askAssistantAboutSection(sectionId) {
     var title = getSectionTitle(sectionId);
@@ -1935,7 +1949,7 @@
           type: 'ozg-context-update',
           section: sectionId,
           sectionTitle: title
-        }, 'https://dossierfrankrijk.nl');
+        }, getEmbedTargetOrigin(iframe));
       } catch(e) { /* iframe niet klaar of cross-origin nog niet ingericht */ }
     }
   }
@@ -1969,9 +1983,16 @@
   
   // ===== POSTMESSAGE LISTENER: IFRAME → PARENT =====
   function initIframeMessageListener() {
+    // Beide origins toestaan: zonder en met www. Vercel redirect zonder→met www
+    // bij dossierfrankrijk.nl, dus berichten kunnen van beide aankomen.
+    var ALLOWED_EMBED_ORIGINS = [
+      'https://dossierfrankrijk.nl',
+      'https://www.dossierfrankrijk.nl'
+    ];
+    
     window.addEventListener('message', function(event) {
-      // Accepteer alleen berichten van de embed-origin
-      if (event.origin !== 'https://dossierfrankrijk.nl') return;
+      // Accepteer alleen berichten van toegestane embed-origins
+      if (ALLOWED_EMBED_ORIGINS.indexOf(event.origin) === -1) return;
       
       var data = event.data;
       if (!data || typeof data !== 'object') return;
@@ -1998,7 +2019,7 @@
               type: 'ozg-context-update',
               section: sid,
               sectionTitle: title
-            }, 'https://dossierfrankrijk.nl');
+            }, getEmbedTargetOrigin(iframe));
           } catch(e) {}
         }
       }
