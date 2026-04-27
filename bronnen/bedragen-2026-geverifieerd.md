@@ -62,13 +62,16 @@
 
 ## AJPA — Allocation journalière du proche aidant
 
-**Bron:** service-public.fr (01/01/2026)
+**Bron:** pour-les-personnes-agees.gouv.fr (01/01/2026, herverifieerd 27/04/2026)
 
 | Eenheid | Bedrag |
 |---------|--------|
-| Per dag | €65,80 |
-| Per halve dag | €32,90 |
-| Mayotte per dag | €56,35 |
+| Per dag | €66,64 |
+| Per halve dag | €33,32 |
+| Mayotte per dag | €58,31 |
+| Mayotte per halve dag | €29,15 |
+
+**Let op — bruto/netto onderscheid:** sommige bronnen citeren €71,43/dag (= brutobedrag aan werkgeverszijde). Voor de ontvanger gaat het om netto €66,64. Beide getallen zijn correct, voor verschillende doeleinden.
 
 ### Limieten
 
@@ -196,7 +199,7 @@
 | ASPA alleenstaand | ✓ | service-public.fr | 24/04/2026 |
 | ASPA echtpaar | ⚠ Indicatief | - | Te verifiëren |
 | ASPA recuperatie drempel | ✓ | service-public.fr | 24/04/2026 |
-| AJPA dagbedrag | ✓ | service-public.fr | 24/04/2026 |
+| AJPA dagbedrag | ✓ Hercheck 27/04/2026 — was €65,80 (foutief), correct €66,64 | pour-les-personnes-agees.gouv.fr | 27/04/2026 |
 | Crédit impôt plafonds | ✓ | impots.gouv.fr | 24/04/2026 |
 | ASH | ⚠ Algemene info | - | Bedragen departementaal |
 
