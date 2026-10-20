@@ -1,0 +1,58 @@
+{
+  "stand": "2026-10-20",
+  "toelichting": "Kopie van de waarden uit Peil, het parameterregister van Communities Abroad. Wordt bijgewerkt door de Peil-agent; tests/peil.test.mjs vergelijkt de tool hiermee. Parameters met status te_verifieren hebben waarde null en worden niet vergeleken.",
+  "parameters": [
+    {
+      "id": "p.fr.apa.bedrag_per_maand",
+      "naam": "APA-bedrag per maand",
+      "waarde": {
+        "gir1": 2080.33,
+        "gir2": 1682.3,
+        "gir3": 1215.99,
+        "gir4": 811.52
+      },
+      "waarde_weergave": "maximum Apa à domicile per maand: Gir 1 2.080,33 / Gir 2 1.682,30 / Gir 3 1.215,99 / Gir 4 811,52 euro",
+      "bron_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F10009",
+      "verificatiedatum": "2026-10-19"
+    },
+    {
+      "id": "p.fr.aspa.maximum_alleenstaand",
+      "naam": "ASPA maximum voor een alleenstaande",
+      "waarde": 1043.59,
+      "waarde_weergave": "1.043,59 euro bruto per maand (12.523,14 euro per jaar)",
+      "bron_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F16871",
+      "verificatiedatum": "2026-10-19"
+    },
+    {
+      "id": "p.fr.ir.credit_hulp_aan_huis_percentage",
+      "naam": "Crédit d'impôt hulp aan huis, percentage",
+      "waarde": 0.5,
+      "waarde_weergave": "50 procent",
+      "bron_url": "https://www.impots.gouv.fr/www2/fichiers/documentation/brochure/ir_2026/pdf_integral/Brochure-IR-2026.pdf",
+      "verificatiedatum": "2026-10-19"
+    },
+    {
+      "id": "p.fr.ir.credit_hulp_aan_huis_plafond",
+      "naam": "Crédit d'impôt hulp aan huis, plafond (inkomstenjaar 2025, aangifte 2026)",
+      "waarde": {
+        "basis": 12000,
+        "verhoging_per_kind_of_65plus": 1500,
+        "max_met_verhogingen": 15000,
+        "eerste_jaar_basis": 15000,
+        "eerste_jaar_max": 18000,
+        "invaliditeit": 20000
+      },
+      "waarde_weergave": "12.000 euro, plus 1.500 euro per kind ten laste of 65-plusser tot 15.000 euro; eerste jaar 15.000 tot 18.000 euro; 20.000 euro bij invaliditeit",
+      "bron_url": "https://www.impots.gouv.fr/www2/fichiers/documentation/brochure/ir_2026/pdf_integral/Brochure-IR-2026.pdf",
+      "verificatiedatum": "2026-10-19"
+    },
+    {
+      "id": "p.fr.renov.maprimeadapt_maximum",
+      "naam": "MaPrimeAdapt, maximaal aandeel van de kosten",
+      "waarde": 70,
+      "waarde_weergave": "Tot 70% (zeer bescheiden inkomens) of 50% (bescheiden inkomens) van de werken, op een plafond van 22.000 EUR HT",
+      "bron_url": "https://www.economie.gouv.fr/particuliers/gerer-mon-argent/beneficier-daides-et-de-reductions-dimpots/maprimeadapt-tout-savoir",
+      "verificatiedatum": "2026-10-19"
+    }
+  ]
+}

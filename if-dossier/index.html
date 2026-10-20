@@ -139,6 +139,25 @@
     .ifr-ozg table { display: block; overflow-x: auto; }
   }
   
+  /* Peil-label: stempel bij de uitkomst en voettekstalinea. Alleen zichtbaar als PEIL_LABEL_AAN true is. */
+  .peil-stempel:focus-visible, .peil-alinea a:focus-visible{ outline:2px solid #800000; outline-offset:3px; border-radius:4px; }
+  .peil-stempel-rij{ display:flex; justify-content:flex-end; margin-top:12px; }
+  .peil-stempel{ display:inline-flex; align-items:center; gap:9px; min-height:44px; max-width:100%; padding:4px 12px 4px 4px; border:1px solid #eadede; border-radius:999px; background:#fff; color:#800000; text-decoration:none; transition:border-color .15s, background .15s; }
+  .peil-stempel svg{ flex:none; width:36px; height:36px; display:block; opacity:.85; filter:drop-shadow(0 1px 0 rgba(255,255,255,.9)) drop-shadow(0 -1px 0 rgba(128,0,0,.12)); }
+  .peil-stempel__tk{ display:flex; flex-direction:column; line-height:1.25; min-width:0; overflow-wrap:anywhere; }
+  .peil-stempel__t1{ font-size:13px; font-weight:700; color:#7a1f1f; }
+  .peil-stempel__t2{ font-size:12px; color:#6a5d58; }
+  .peil-stempel:hover{ border-color:#cfa9a9; background:#fcf7f7; }
+  .peil-pijl{ display:inline-block; margin-left:.25em; font-size:12px; line-height:1; color:inherit; transition:transform .15s; }
+  @media (prefers-reduced-motion: no-preference){ .peil-stempel:hover .peil-pijl{ transform:translate(2px,-2px); } }
+  .peil-stempel:hover .peil-stempel__t1{ text-decoration:underline; text-underline-offset:2px; }
+  .peil-merk{ flex:none; display:inline-block; width:18px; height:18px; border-radius:50%; background:#800000; color:#fff; font:700 12px/18px system-ui, sans-serif; text-align:center; text-decoration:none; }
+  .peil-alinea{ position:relative; margin:12px 0 0; padding-left:26px; max-width:72ch; font-size:13px; line-height:1.6em; color:#555; }
+  .peil-alinea[hidden], #peilStempel[hidden]{ display:none; }
+  .peil-alinea .peil-merk{ position:absolute; left:0; top:3px; }
+  .peil-alinea strong{ color:#222; }
+  .peil-alinea a{ display:inline-block; padding:6px 0; color:#800000; text-decoration:underline; text-underline-offset:3px; }
+
   /* ===== AFDRUKKEN / OPSLAAN ALS PDF ===== */
   .ifr-ozg-print-hint { flex-basis: 100%; margin: 0; font-size: 0.85em; color: #666; }
   @media print {
@@ -299,6 +318,7 @@
 <div class="ifr-ozg-waarschuwing">
 <p><strong>Disclaimer.</strong> Dit dossier is geen juridisch, fiscaal of medisch advies. De informatie is gebaseerd op officiële Franse overheidsbronnen (zie sectie 30), maar uw persoonlijke situatie kan afwijkingen vragen. Voor complexe dossiers is professioneel advies onmisbaar.</p>
 </div>
+<div id="peilStempel" hidden></div>
 
 <div class="ifr-ozg-section-actions" data-ifr-section="1"></div>
 </section>
@@ -1424,7 +1444,8 @@
 </thead>
 <tbody>
 <tr><td>Standaard</td><td>€12.000</td><td>€6.000</td></tr>
-<tr><td>Eerste jaar of +1 kind</td><td>€15.000</td><td>€7.500</td></tr>
+<tr><td>Per kind ten laste of 65-plusser in het huishouden erbij (€1.500 per persoon)</td><td>tot €15.000</td><td>tot €7.500</td></tr>
+<tr><td>Eerste jaar dat u de hulp gebruikt</td><td>€15.000, met verhogingen tot €18.000</td><td>€7.500, met verhogingen tot €9.000</td></tr>
 <tr><td>Handicap in huishouden</td><td>€20.000</td><td>€10.000</td></tr>
 </tbody>
 </table>
@@ -1625,6 +1646,7 @@
   <p class="ifr-ozg-footer-copyright">© 2026 Communities Abroad — Infofrankrijk.com (KvK 55741509). Alle rechten voorbehouden.</p>
   <p class="ifr-ozg-footer-disclaimer">Dit dossier is samengesteld op basis van officiële Franse en Nederlandse overheidsbronnen. Het overnemen van substantiële tekstdelen zonder bronvermelding is niet toegestaan en kan worden aangemerkt als plagiaat. Voor citaten met bronvermelding: <a href="https://infofrankrijk.com" target="_blank" rel="noopener">www.infofrankrijk.com</a>. Het dossier wordt jaarlijks herzien (eerstvolgende update: januari 2027).</p>
   <p class="ifr-ozg-footer-disclaimer">Dit dossier is geen juridisch, fiscaal of medisch advies. Voor uw specifieke situatie raadpleegt u het CLIC, uw conseil départemental, een notaris, een fiscaal adviseur of de Nederlandse vertegenwoordiging in Frankrijk.</p>
+  <p class="peil-alinea" id="peilVoet" hidden></p>
 </footer>
 
 </div>
@@ -2074,6 +2096,46 @@
   } else {
     init();
   }
+})();
+</script>
+
+<script>
+(function() {
+  'use strict';
+  // PEIL-BEGIN
+  // Peil: het parameterregister van Communities Abroad (privé). De waarden staan als kopie in peil/waarden.json; tests/peil.test.mjs bewaakt dat de tool daarmee overeenkomt.
+  // Bij elke controle alleen PEIL_STAND aanpassen (en peil/waarden.json).
+  const PEIL_STAND = "2026-10-20";
+  // Schakelaar voor het Peil-label (stempel en voettekstalinea). Zolang false toont de tool niets over Peil.
+  const PEIL_LABEL_AAN = true;
+  const PEIL_UITLEG_URL = "https://infofrankrijk.com/ons-manifest-hoe-wij-werken/";
+  const MAANDEN_NL = ["januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"];
+  const MAANDEN_KORT = ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"];
+  function peilStandNl() {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(PEIL_STAND);
+    return m ? `${parseInt(m[3], 10)} ${MAANDEN_NL[parseInt(m[2], 10) - 1]} ${m[1]}` : PEIL_STAND;
+  }
+  function peilStandKort() {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(PEIL_STAND);
+    return m ? `${parseInt(m[3], 10)} ${MAANDEN_KORT[parseInt(m[2], 10) - 1]} ${m[1]}` : PEIL_STAND;
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+  const PEIL_MERK = `<span class="peil-merk" aria-hidden="true">&#10003;</span>`;
+  // Compacte stempelknop: merkteken met dubbele ring en vinkje, twee korte regels, het geheel is één link naar het manifest.
+  function peilRegelHtml() {
+    if (!PEIL_LABEL_AAN) return "";
+    const aria = `Bedragen gecontroleerd tegen Peil, stand ${peilStandNl()}, lees hoe wij werken`;
+    return `<div class="peil-stempel-rij"><a class="peil-stempel" href="${PEIL_UITLEG_URL}" target="_blank" rel="noopener" aria-label="${escapeHtml(aria)}"><svg viewBox="0 0 40 40" aria-hidden="true" focusable="false"><circle cx="20" cy="20" r="18.5" fill="#fff" stroke="#800000" stroke-width="1.6"/><circle cx="20" cy="20" r="14.5" fill="none" stroke="#800000" stroke-width="1"/><path d="M13.5 20.5 L18 25 L26.5 15.5" fill="none" stroke="#800000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="peil-stempel__tk" aria-hidden="true"><span class="peil-stempel__t1">Gecontroleerd tegen Peil</span><span class="peil-stempel__t2">stand ${escapeHtml(peilStandKort())}<span class="peil-pijl" aria-hidden="true">&#8599;</span></span></span></a></div>`;
+  }
+  function peilVoetHtml() {
+    if (!PEIL_LABEL_AAN) return "";
+    return `${PEIL_MERK}<strong>Over de bedragen in deze tool.</strong> Alle wettelijke tarieven, bedragen en grenzen komen uit Peil, het register waarin wij deze gegevens bijhouden. Elk daarvan is gecontroleerd bij de officiële bron, de laatste controle was op ${escapeHtml(peilStandNl())}. Waar de tool met een aanname of schatting rekent, staat dat bij de uitkomst. <a href="${PEIL_UITLEG_URL}" target="_blank" rel="noopener">Lees in ons manifest hoe wij werken</a>`;
+  }
+  { const s = document.getElementById("peilStempel"); if (s) { s.innerHTML = peilRegelHtml(); s.hidden = !PEIL_LABEL_AAN; } }
+  { const v = document.getElementById("peilVoet"); if (v) { v.innerHTML = peilVoetHtml(); v.hidden = !PEIL_LABEL_AAN; } }
+  // PEIL-EINDE
 })();
 </script>
 

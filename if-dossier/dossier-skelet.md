@@ -123,8 +123,8 @@ Selecteer de regeling(en) waarover u meer wilt weten:
 |----------|----------|-----|---------------------------|----------------|
 | **APA** | 60+, GIR 1-4 | Zorgbudget thuis of EHPAD | €811 – €2.080/maand | Conseil départemental |
 | **ASH** | Laag inkomen, in EHPAD | Bijdrage EHPAD-kosten | Variabel (na vermogenstoets) | Conseil départemental |
-| **ASPA** | 65+, laag inkomen | Minimuminkomen | Tot €1.012/maand (alleenstaand) | Caisse de retraite |
-| **Crédit d'impôt** | Iedereen met hulp aan huis | 50% kosten terug | Max €6.000-€10.000/jaar | Belastingaangifte |
+| **ASPA** | 65+, laag inkomen | Minimuminkomen | Tot €1.043,59/maand (alleenstaand) | Caisse de retraite |
+| **Crédit d'impôt** | Iedereen met hulp aan huis | 50% kosten terug | Uitgavenplafond €12.000 (met verhogingen tot €15.000, eerste jaar tot €18.000, €20.000 bij invaliditeit), dus €6.000 tot €10.000 terug | Belastingaangifte |
 | **MaPrimeAdapt'** | Eigenaar 60+/70+ | Subsidie woningaanpassing | Tot 70% van kosten | ANAH |
 | **Aides retraite** | Gepensioneerden | Diverse (nooduitkering, hulp) | Variabel | CARSAT / Agirc-Arrco |
 
