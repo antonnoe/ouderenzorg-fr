@@ -137,6 +137,26 @@
     .ifr-ozg h2 { font-size: 1.3em; }
     .ifr-ozg-premium-actions { flex-direction: column; }
   }
+  
+  /* ===== AFDRUKKEN / OPSLAAN ALS PDF ===== */
+  .ifr-ozg-print-hint { flex-basis: 100%; margin: 0; font-size: 0.85em; color: #666; }
+  @media print {
+    @page { size: A4; margin: 15mm; }
+    html, body { background: #fff !important; }
+    body * { visibility: hidden !important; }
+    .ifr-ozg, .ifr-ozg * { visibility: visible !important; }
+    .ifr-ozg-print-weg { display: none !important; }
+    .ifr-ozg { position: absolute; left: 0; top: 0; width: 100%; font-size: 10.5pt; line-height: 1.5em; color: #000; }
+    .ifr-ozg-topbanner, .ifr-ozg-cta, .ifr-ozg-popover, .ifr-ozg-popover-overlay, .ifr-ozg-toast,
+    .ifr-ozg-section-actions, .ifr-ozg-premium-actions, .ifr-ozg-assistant, .ifr-ozg-inhoudsopgave,
+    #ifr-ozg-toc { display: none !important; }
+    .ifr-ozg h1 { font-size: 20pt; }
+    .ifr-ozg h2 { font-size: 14pt; break-after: avoid; }
+    .ifr-ozg h3, .ifr-ozg h4 { break-after: avoid; }
+    .ifr-ozg-kader, .ifr-ozg-waarschuwing, .ifr-ozg-tip, .ifr-ozg tr, .ifr-ozg li { break-inside: avoid; }
+    .ifr-ozg a { color: #800000; text-decoration: none; }
+    .ifr-ozg-section { margin-bottom: 1em; }
+  }
 </style>
 
 <div class="ifr-ozg" [ifr_member_attr]>
@@ -1616,9 +1636,6 @@
   Plak dit direct na deel 1.
 ============================================================ -->
 
-<!-- jsPDF voor PDF-export -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 <script>
 (function() {
   'use strict';
@@ -1689,7 +1706,7 @@
     } else if (action === 'save-dossier') {
       textEl.textContent = 'Sla het volledige dossier op in uw persoonlijke DossierFrankrijk, zodat u het later kunt raadplegen.';
     } else if (action === 'download-pdf') {
-      textEl.textContent = 'Download het dossier als overzichtelijke PDF — om offline door te nemen, uit te printen, of te delen.';
+      textEl.textContent = 'Sla het dossier op als overzichtelijke PDF — om offline door te nemen, uit te printen, of te delen. Kies in het afdrukvenster \'Opslaan als PDF\'.';
     } else {
       textEl.textContent = 'Deze functie is beschikbaar voor abonnees van Infofrankrijk.';
     }
@@ -1774,110 +1791,40 @@
     showToast('✓ Doorgestuurd naar DossierFrankrijk');
   }
   
-  // ===== PDF DOWNLOAD =====
-  function downloadAsPdf() {
-    if (!window.jspdf || !window.jspdf.jsPDF) {
-      showToast('⚠ PDF-bibliotheek niet geladen');
-      return;
-    }
-    
-    var doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
-    var pageWidth = 210, pageHeight = 297, margin = 20;
-    var maxWidth = pageWidth - 2 * margin;
-    var y = margin;
-    
-    // Titel
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(18);
-    doc.setTextColor(128, 0, 0);
-    doc.text(DOSSIER_TITLE, margin, y);
-    y += 10;
-    
-    // Subtitel
-    doc.setFontSize(11);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(80, 80, 80);
-    doc.text('Het complete dossier voor Nederlandstaligen in Frankrijk', margin, y);
-    y += 6;
-    doc.setFontSize(9);
-    doc.text('Bron: infofrankrijk.com — ' + new Date().toLocaleDateString('nl-NL'), margin, y);
-    y += 10;
-    
-    // Lijn
-    doc.setDrawColor(128, 0, 0);
-    doc.line(margin, y, pageWidth - margin, y);
-    y += 8;
-    
-    // Secties
-    $$('.ifr-ozg-section').forEach(function(section) {
-      var h2 = section.querySelector('h2');
-      if (!h2) return;
-      
-      // Nieuwe pagina indien nodig
-      if (y > pageHeight - 40) {
-        doc.addPage();
-        y = margin;
-      }
-      
-      // Sectie titel
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(13);
-      doc.setTextColor(128, 0, 0);
-      var titleLines = doc.splitTextToSize(h2.textContent, maxWidth);
-      doc.text(titleLines, margin, y);
-      y += titleLines.length * 6 + 3;
-      
-      // Sectie inhoud
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(10);
-      doc.setTextColor(50, 50, 50);
-      
-      var paragraphs = [];
-      section.querySelectorAll('p, li, h3, h4').forEach(function(el) {
-        var txt = (el.innerText || el.textContent || '').trim();
-        if (txt) {
-          if (el.tagName === 'H3' || el.tagName === 'H4') {
-            paragraphs.push('\n' + txt.toUpperCase());
-          } else if (el.tagName === 'LI') {
-            paragraphs.push('• ' + txt);
-          } else {
-            paragraphs.push(txt);
-          }
+  // ===== PDF: AFDRUKKEN VIA DE BROWSER =====
+  // Geen bibliotheek, CDN of server: de browser maakt de PDF via 'Opslaan als PDF'.
+  // De print-stylesheet (@media print) toont alleen het dossier. Staat het dossier
+  // in een WordPress-pagina, dan worden tijdens het afdrukken de overige
+  // pagina-onderdelen (header, zijbalk, footer) verborgen.
+  var hiddenForPrint = [];
+  function preparePrint() {
+    cleanupPrint();
+    var node = $('.ifr-ozg');
+    while (node && node.parentElement && node !== document.body) {
+      var parent = node.parentElement;
+      Array.prototype.forEach.call(parent.children, function(sib) {
+        if (sib !== node && !/^(SCRIPT|STYLE|LINK)$/.test(sib.tagName)) {
+          sib.classList.add('ifr-ozg-print-weg');
+          hiddenForPrint.push(sib);
         }
       });
-      
-      paragraphs.forEach(function(p) {
-        var lines = doc.splitTextToSize(p, maxWidth);
-        lines.forEach(function(line) {
-          if (y > pageHeight - margin) {
-            doc.addPage();
-            y = margin;
-          }
-          doc.text(line, margin, y);
-          y += 5;
-        });
-        y += 1;
-      });
-      
-      y += 5;
-    });
-    
-    // Paginanummers
-    var pageCount = doc.internal.getNumberOfPages();
-    for (var i = 1; i <= pageCount; i++) {
-      doc.setPage(i);
-      doc.setFontSize(8);
-      doc.setTextColor(150, 150, 150);
-      doc.text(
-        'Infofrankrijk.com — ' + DOSSIER_TITLE + ' — pagina ' + i + ' van ' + pageCount,
-        pageWidth / 2,
-        pageHeight - 10,
-        { align: 'center' }
-      );
+      node = parent;
     }
-    
-    doc.save('ouderenzorg-in-frankrijk-dossier.pdf');
-    showToast('✓ PDF gedownload');
+  }
+  function cleanupPrint() {
+    hiddenForPrint.forEach(function(el) { el.classList.remove('ifr-ozg-print-weg'); });
+    hiddenForPrint = [];
+  }
+  window.addEventListener('beforeprint', preparePrint);
+  window.addEventListener('afterprint', cleanupPrint);
+
+  function downloadAsPdf() {
+    try {
+      window.print();
+    } catch (e) {
+      cleanupPrint();
+      showToast('⚠ Afdrukken is niet gelukt. Probeer Ctrl+P (of Cmd+P).');
+    }
   }
   
   // ===== TOP ACTIES RENDEREN =====
@@ -1896,8 +1843,9 @@
         '<span class="ifr-ozg-premium-btn-icon">📁</span>Opslaan in DossierFrankrijk' +
       '</button>' +
       '<button type="button" class="ifr-ozg-premium-btn" data-ifr-action="download-pdf"' + lockAttr + tipPdf + '>' +
-        '<span class="ifr-ozg-premium-btn-icon">📄</span>Download als PDF' +
-      '</button>';
+        '<span class="ifr-ozg-premium-btn-icon">📄</span>Opslaan als PDF' +
+      '</button>' +
+      '<p class="ifr-ozg-print-hint">Kies in het afdrukvenster \'Opslaan als PDF\'.</p>';
     
     // CTA tonen voor niet-abonnees
     if (cta) cta.style.display = isMember ? 'none' : 'block';
