@@ -68,7 +68,7 @@ const vereist = (id) => { const p = perId.get(id); if (!p) { fout(`${id}: staat 
     controleer("p.fr.ir.credit_hulp_aan_huis_plafond", "tabel mist standaard 12.000 en teruggave 6.000", heeft(html, `<td>Standaard</td><td>${p(w.basis)}</td><td>${p(w.basis / 2)}</td>`));
     controleer("p.fr.ir.credit_hulp_aan_huis_plafond", "tabel mist verhoging tot 15.000 en teruggave 7.500", heeft(html, `<td>tot ${p(w.max_met_verhogingen)}</td><td>tot ${p(w.max_met_verhogingen / 2)}</td>`) && heeft(html, `${p(w.verhoging_per_kind_of_65plus)} per persoon`));
     controleer("p.fr.ir.credit_hulp_aan_huis_plafond", "tabel mist eerste jaar 15.000 tot 18.000", heeft(html, `<td>${p(w.eerste_jaar_basis)}, met verhogingen tot ${p(w.eerste_jaar_max)}</td>`));
-    controleer("p.fr.ir.credit_hulp_aan_huis_plafond", "tabel mist invaliditeit 20.000 en 10.000", heeft(html, `<td>Handicap in huishouden</td><td>${p(w.invaliditeit)}</td><td>${p(w.invaliditeit / 2)}</td>`));
+    controleer("p.fr.ir.credit_hulp_aan_huis_plafond", "tabel mist invaliditeit 20.000 en 10.000", heeft(html, `<td>Invaliditeit derde categorie (u zelf of een persoon ten laste in uw huishouden) of een kind ten laste met complément AEEH</td><td>${p(w.invaliditeit)}</td><td>${p(w.invaliditeit / 2)}</td>`));
     controleer("p.fr.ir.credit_hulp_aan_huis_plafond", "dossier-skelet.md noemt het uitgavenplafond niet", heeft(skelet, `Uitgavenplafond ${p(w.basis)}`) && !/Max €6\.000-€10\.000/.test(skelet)); } }
 { const w = vereist("p.fr.ir.credit_hulp_aan_huis_percentage");
   if (w !== null) controleer("p.fr.ir.credit_hulp_aan_huis_percentage", `dossier noemt niet ${w * 100}%`, heeft(html, `${w * 100}% belastingteruggave`) && heeft(skelet, `${w * 100}% kosten terug`)); }
