@@ -1,8 +1,22 @@
 {
-  "stand": "2026-10-20",
-  "registerversie": "1.4.0",
+  "stand": "2026-10-26",
+  "registerversie": "1.12.0",
   "toelichting": "Kopie van de waarden uit Peil, het parameterregister van Communities Abroad. Wordt bijgewerkt door de Peil-agent; tests/peil.test.mjs vergelijkt de tool hiermee. Parameters met status te_verifieren hebben waarde null en worden niet vergeleken.",
   "parameters": [
+    {
+      "id": "p.fr.ajpa.dagbedrag",
+      "naam": "Allocation journalière du proche aidant, dagbedrag",
+      "waarde": {
+        "dag": 66.64,
+        "halve_dag": 33.32,
+        "max_dagen_per_maand": 22,
+        "max_dagen_per_persoon": 66,
+        "max_dagen_loopbaan": 264
+      },
+      "waarde_weergave": "66,64 euro per dag, 33,32 euro per halve dag; 22 per maand, 66 per geholpen persoon, 264 per loopbaan",
+      "bron_url": "https://www.pour-les-personnes-agees.gouv.fr/solutions-pour-les-aidants/soutien-financier/l-allocation-journaliere-du-proche-aidant-qu-est-ce-que-c-est",
+      "verificatiedatum": "2026-10-26"
+    },
     {
       "id": "p.fr.apa.bedrag_per_maand",
       "naam": "APA-bedrag per maand",
@@ -17,12 +31,86 @@
       "verificatiedatum": "2026-10-19"
     },
     {
+      "id": "p.fr.apa.majoration_aidant",
+      "naam": "APA, maximale verhoging voor respijt en ziekenhuisopname van de mantelzorger",
+      "waarde": {
+        "repit_per_jaar": 583.52,
+        "hospitalisatie_per_opname": 1159.32
+      },
+      "waarde_weergave": "respijt tot 583,52 euro per jaar; ziekenhuisopname mantelzorger tot 1.159,32 euro per opname, bovenop het plafond",
+      "bron_url": "https://www.cnsa.fr/sites/default/files/2026-01/Tarifs-APA-1er-janvier-2026.pdf",
+      "verificatiedatum": "2026-10-26"
+    },
+    {
+      "id": "p.fr.apa.mtp",
+      "naam": "Majoration pour aide constante d'une tierce personne (MTP), maandbedrag",
+      "waarde": 1288.13,
+      "waarde_weergave": "1.288,13 euro per maand",
+      "bron_url": "https://www.cnsa.fr/sites/default/files/2026-01/Tarifs-APA-1er-janvier-2026.pdf",
+      "verificatiedatum": "2026-10-26"
+    },
+    {
+      "id": "p.fr.apa.participation_drempels",
+      "naam": "APA, inkomensgrenzen en schijven voor de eigen bijdrage (thuis en in een instelling)",
+      "waarde": {
+        "domicile_geen_bijdrage_tot": 933.89,
+        "domicile_90_procent_boven": 3439.31,
+        "fractie_a1_tot": 408.34,
+        "fractie_a2_tot": 641.49,
+        "maximaal_tarief_domicile": 0.9,
+        "etablissement_alleen_gir56_onder": 2846.77,
+        "etablissement_80_procent_boven": 4379.64,
+        "maximaal_tarief_etablissement": 0.8,
+        "paar_deler_domicile": 1.7,
+        "paar_deler_etablissement": 2,
+        "coefficienten_mtp": {
+          "geen_bijdrage": 0.725,
+          "maximum_domicile": 2.67,
+          "a1": 0.317,
+          "a2": 0.498,
+          "etablissement_laag": 2.21,
+          "etablissement_hoog": 3.4
+        }
+      },
+      "waarde_weergave": "thuis: geen bijdrage tot 933,89 euro, 90 procent boven 3.439,31 euro, schijven tot 408,34 en 641,49 euro; instelling: alleen GIR 5-6-tarief onder 2.846,77 euro, 80 procent boven 4.379,64 euro",
+      "bron_url": "https://www.cnsa.fr/sites/default/files/2026-01/Tarifs-APA-1er-janvier-2026.pdf",
+      "verificatiedatum": "2026-10-26"
+    },
+    {
+      "id": "p.fr.ash.leefgeld_minimum",
+      "naam": "ASH en APA in een instelling, minimaal leefgeld per maand",
+      "waarde": 125,
+      "waarde_weergave": "125 euro per maand (een honderdste van 12.523,14 euro, afgerond), en ten minste 10 procent van de inkomsten",
+      "bron_url": "https://www.cnsa.fr/sites/default/files/2026-01/Tarifs-APA-1er-janvier-2026.pdf",
+      "verificatiedatum": "2026-10-26"
+    },
+    {
       "id": "p.fr.aspa.maximum_alleenstaand",
       "naam": "ASPA maximum voor een alleenstaande",
       "waarde": 1043.59,
       "waarde_weergave": "1.043,59 euro bruto per maand (12.523,14 euro per jaar)",
       "bron_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F16871",
       "verificatiedatum": "2026-10-19"
+    },
+    {
+      "id": "p.fr.aspa.maximum_paar",
+      "naam": "ASPA maximum voor een paar waarvan beide partners ASPA krijgen",
+      "waarde": 1620.18,
+      "waarde_weergave": "1.620,18 euro per maand samen (19.442,21 euro per jaar)",
+      "bron_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F16871",
+      "verificatiedatum": "2026-10-26"
+    },
+    {
+      "id": "p.fr.aspa.terugvordering",
+      "naam": "ASPA, drempel en jaarmaxima voor terugvordering uit de nalatenschap",
+      "waarde": {
+        "drempel_actif_net_metropool": 108586.14,
+        "max_per_jaar_alleenstaand": 8463.42,
+        "max_per_jaar_paar": 11322.77
+      },
+      "waarde_weergave": "terugvordering alleen boven 108.586,14 euro netto-actief; ten hoogste 8.463,42 euro (alleenstaand) of 11.322,77 euro (paar) per jaar uitkering",
+      "bron_url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F16871",
+      "verificatiedatum": "2026-10-26"
     },
     {
       "id": "p.fr.ir.credit_hulp_aan_huis_percentage",
@@ -43,7 +131,7 @@
         "eerste_jaar_max": 18000,
         "invaliditeit": 20000
       },
-      "waarde_weergave": "12.000 euro, plus 1.500 euro per kind ten laste of 65-plusser tot 15.000 euro; eerste jaar 15.000 tot 18.000 euro; 20.000 euro bij invaliditeit",
+      "waarde_weergave": "12.000 euro, plus 1.500 euro per kind ten laste of 65-plusser tot 15.000 euro; eerste jaar 15.000 tot 18.000 euro, alleen bij emploi direct (niet bij hulp via een organisme of SAAD); 20.000 euro bij invaliditeit (derde categorie of kind met complément AEEH)",
       "bron_url": "https://www.impots.gouv.fr/www2/fichiers/documentation/brochure/ir_2026/pdf_integral/Brochure-IR-2026.pdf",
       "verificatiedatum": "2026-10-19"
     },
